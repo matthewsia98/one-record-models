@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-import json
-from devtools import debug
-from pydantic import BaseModel, Field, AnyUrl, PrivateAttr
+from typing import Annotated, ClassVar, List, Optional, cast
 
-from typing import Annotated, ClassVar, List, cast, Any, Optional
-import pyld.jsonld
-
-from rdflib import Graph, URIRef, BNode, Literal, RDF
+from pydantic import AnyUrl, BaseModel, Field, PrivateAttr
+from rdflib import RDF, BNode, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
 
@@ -90,9 +86,7 @@ class Graphable(BaseModel):
     def serialize(self, frame, context) -> str:
         g = self.to_graph()
         serialized = g.serialize(format="json-ld")
-        framed = pyld.jsonld.frame(json.loads(serialized), frame)
-        compacted = pyld.jsonld.compact(framed, context)
-        return json.dumps(compacted, indent=4)
+        return serialized
 
 
 class ServerInformation(Graphable):
@@ -144,7 +138,6 @@ server_info = ServerInformation(
         name="Example Organization",
     ),
 )
-debug(server_info)
 
 
 result = server_info.serialize(
@@ -182,12 +175,11 @@ subject = next(
     g.subjects(RDF.type, URIRef("https://onerecord.iata.org/ns/api#ServerInformation"))
 )
 server_info_from_graph = ServerInformation.from_graph(g, subject)
-debug(server_info_from_graph)
 
 
-assert (
-    server_info == server_info_from_graph
-), "Deserialized object does not match the original"
+assert server_info == server_info_from_graph, (
+    "Deserialized object does not match the original"
+)
 
 
 data = """\
@@ -231,4 +223,3 @@ subject = next(
     g.subjects(RDF.type, URIRef("https://onerecord.iata.org/ns/api#ServerInformation"))
 )
 server_info_from_graph = ServerInformation.from_graph(g, subject)
-debug(server_info_from_graph)
