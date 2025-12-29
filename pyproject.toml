@@ -1,0 +1,22 @@
+[project]
+name = "one-record-models"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pydantic>=2.12.5",
+    "pyld>=2.0.4",
+    "rdflib>=7.5.0",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "pyld.*",
+]
+ignore_missing_imports = true
+
+[dependency-groups]
+dev = [
+    "devtools>=0.12.2",
+]
