@@ -10,6 +10,12 @@ dependencies = [
 ]
 
 
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+]
+
+
 [tool.uv]
 package = true
 
@@ -22,9 +28,4 @@ extend-select = [
 
 [tool.ruff.lint.per-file-ignores]
 # Ignore `E741` (ambiguous variable name) in all files under `app/namespaces/code_lists/`.
-"src/one_record_ontology/models/code_lists/*.py" = ["E741"]
-
-[dependency-groups]
-dev = [
-    "mypy>=1.19.1",
-]
+"src/one_record_ontology/models/code_lists.py" = ["E741"]

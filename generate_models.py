@@ -23,10 +23,24 @@ XSD_TO_PYTHON = {
 PREFIX_TO_URL = {
     "api": "https://onerecord.iata.org/ns/api/ontology.ttl",
     "cargo": "https://onerecord.iata.org/ns/cargo/ontology.ttl",
-    "code-lists": "https://onerecord.iata.org/ns/code-lists/ontology.ttl",
+    "code_lists": "https://onerecord.iata.org/ns/code-lists/ontology.ttl",
 }
 
+
+Path("src/one_record_ontology/models/").mkdir(parents=True, exist_ok=True)
+
+
 for prefix, url in PREFIX_TO_URL.items():
+    lines = [
+        "from __future__ import annotations",
+        "from pydantic import AnyUrl, BaseModel, Field",
+        "from typing import Any, List, Optional",
+        "from rdflib import URIRef",
+        "from datetime import datetime, timedelta",
+        "from enum import Enum",
+        "from rdflib import URIRef",
+    ]
+
     g = Graph()
     g.parse(url)
 
@@ -71,18 +85,18 @@ for prefix, url in PREFIX_TO_URL.items():
         ns_prefix = ns.rpartition("/")[-1].rstrip("#")
 
         if "code-lists" in str(cls):
-            ns_prefix = "code-lists"
+            ns_prefix = "code_lists"
 
         if ns_prefix != prefix:
             continue
 
-        if "code-lists" in str(cls):
-            ns_prefix = "code_lists"
+        # if "code-lists" in str(cls):
+        #     ns_prefix = "code_lists"
 
-        Path(f"src/one_record_ontology/models/{ns_prefix}").mkdir(
-            parents=True, exist_ok=True
-        )
-        Path(f"src/one_record_ontology/models/{ns_prefix}/__init__.py").touch()
+        # Path(f"src/one_record_ontology/models/{ns_prefix}").mkdir(
+        #     parents=True, exist_ok=True
+        # )
+        # Path(f"src/one_record_ontology/models/{ns_prefix}/__init__.py").touch()
 
         cls_properties = defaultdict(dict)
 
@@ -93,20 +107,18 @@ for prefix, url in PREFIX_TO_URL.items():
                 is_enum = True
                 enum_values = list(g.items(one_of))
 
-                lines = []
-                lines.append("from enum import Enum")
-                lines.append("from rdflib import URIRef")
-                lines.append(f"class {cls_name}(str, Enum):")
+                cls_lines = []
+                cls_lines.append(f"class {cls_name}(str, Enum):")
 
                 label = g.value(cls, RDFS.label)
                 comment = g.value(cls, RDFS.comment)
                 if label is not None or comment is not None:
-                    lines.append('    """')
+                    cls_lines.append('    """')
                     if label is not None:
-                        lines.append(f"    label: {label}")
+                        cls_lines.append(f"    label: {label}")
                     if comment is not None:
-                        lines.append(f"    comment: {comment}")
-                    lines.append('    """')
+                        cls_lines.append(f"    comment: {comment}")
+                    cls_lines.append('    """')
 
                 for ev in enum_values:
                     _, ev_name = split_uri(ev)
@@ -115,19 +127,20 @@ for prefix, url in PREFIX_TO_URL.items():
 
                     label = g.value(ev, RDFS.label)
                     if label is not None:
-                        lines.append(f"    # label: {label}")
+                        cls_lines.append(f"    # label: {label}")
 
                     comment = g.value(ev, RDFS.comment)
                     if comment is not None:
                         comment = " ".join(
                             [line.strip() for line in str(comment).splitlines()]
                         )
-                        lines.append(f"    # comment: {comment}")
+                        cls_lines.append(f"    # comment: {comment}")
 
-                    lines.append(f'    {ev_name} = URIRef("{(ev)}")')
-                Path(
-                    f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py"
-                ).write_text("\n".join(lines), encoding="utf-8")
+                    cls_lines.append(f'    {ev_name} = URIRef("{(ev)}")')
+                # Path(
+                #     f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py"
+                # ).write_text("\n".join(lines), encoding="utf-8")
+                lines.extend(cls_lines)
 
         if is_enum:
             continue
@@ -183,33 +196,28 @@ for prefix, url in PREFIX_TO_URL.items():
                 super_class, OWL.maxQualifiedCardinality
             )
 
-        lines = [
-            "from pydantic import AnyUrl, BaseModel, Field",
-            "from typing import List, Optional",
-            "from rdflib import URIRef",
-            "from datetime import datetime, timedelta",
-        ]
+        cls_lines = []
 
         if base_classes:
             for base_class_uri in base_class_uris:
                 ns, base_class_name = split_uri(base_class_uri)
                 ns_prefix = ns.rpartition("/")[-1].rstrip("#")
-                lines.append(
-                    f"from one_record_ontology.models.{ns_prefix}.{base_class_name} import {base_class_name}"
-                )
-            lines.append(f"class {cls_name}({', '.join(base_classes)}):")
+                # cls_lines.append(
+                #     f"from one_record_ontology.models.{ns_prefix}.{base_class_name} import {base_class_name}"
+                # )
+            cls_lines.append(f"class {cls_name}({', '.join(base_classes)}):")
         else:
-            lines.append(f"class {cls_name}(BaseModel):")
+            cls_lines.append(f"class {cls_name}(BaseModel):")
 
         if not cls_properties:
-            lines.append("    ...")
+            cls_lines.append("    ...")
 
         imported = set()
-        type_checking_lines = [
-            "from __future__ import annotations",
-            "from typing import TYPE_CHECKING",
-            "if TYPE_CHECKING:",
-        ]
+        # type_checking_lines = [
+        #     "from __future__ import annotations",
+        #     "from typing import TYPE_CHECKING",
+        #     "if TYPE_CHECKING:",
+        # ]
         for prop, attrs in cls_properties.items():
             _, prop_name = split_uri(prop)
 
@@ -235,13 +243,17 @@ for prefix, url in PREFIX_TO_URL.items():
                 if "code-lists" in prop_ns:
                     prop_ns_prefix = "code_lists"
 
-                if python_type != cls_name and python_type not in imported:
+                if (
+                    prefix != prop_ns_prefix
+                    and python_type != cls_name
+                    and python_type not in imported
+                ):
                     # type_checking_lines.append(
                     #     f"    from one_record_ontology.models.{prop_ns_prefix}.{python_type} import {python_type}",
                     # )
                     lines.insert(
                         0,
-                        f"from one_record_ontology.models.{prop_ns_prefix}.{python_type} import {python_type}",
+                        f"from one_record_ontology.models.{prop_ns_prefix} import {python_type}",
                     )
                     imported.add(python_type)
 
@@ -287,20 +299,26 @@ for prefix, url in PREFIX_TO_URL.items():
                     python_type = f'List[{python_type}] = Field(default_factory=list, serialization_alias="{prop}")'
 
             if (label := attrs.get(RDFS.label)) is not None:
-                lines.append(f"    # label: {label}")
+                cls_lines.append(f"    # label: {label}")
             if (comment := attrs.get(RDFS.comment)) is not None:
-                lines.append(f"    # comment: {comment}")
-            lines.append(f"    # iri: {prop}")
+                cls_lines.append(f"    # comment: {comment}")
+            cls_lines.append(f"    # iri: {prop}")
 
-            lines.append(f"    {prop_name}: {python_type}")
+            cls_lines.append(f"    {prop_name}: {python_type}")
 
         # if len(imported) > 0:
         #     lines.insert(0, "\n".join(type_checking_lines))
 
-        Path(f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py").write_text(
-            "\n".join(lines),
-            encoding="utf-8",
-        )
+        # Path(f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py").write_text(
+        #     "\n".join(lines),
+        #     encoding="utf-8",
+        # )
+        lines.extend(cls_lines)
+
+    Path(f"src/one_record_ontology/models/{prefix}.py").write_text(
+        "\n".join(lines),
+        encoding="utf-8",
+    )
 
 subprocess.run(
     [
