@@ -1,6 +1,13 @@
 from enum import Enum
+
 from rdflib import URIRef
+
+
 class RequestStatus(str, Enum):
+    """
+    label: RequestStatus
+    """
+
     # label: REQUEST_ACCEPTED
     REQUEST_ACCEPTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED")
     # label: REQUEST_FAILED
