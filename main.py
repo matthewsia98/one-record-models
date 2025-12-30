@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 
 from typing import Annotated, ClassVar, List, Optional, cast
 
@@ -9,15 +10,20 @@ from rdflib.graph import _SubjectType
 
 class Graphable(BaseModel):
     _types: ClassVar[List[URIRef]]
-    id: AnyUrl | None = Field(default=None, serialization_alias="@id")
-    _id: URIRef | None = PrivateAttr(default=None)
+    id: AnyUrl | None = Field(default=None, alias="@id")
+    # _id: URIRef | None = PrivateAttr(default=None)
 
-    def model_post_init(self, __context):
-        if self.id is not None:
-            self._id = URIRef(str(self.id))
+    model_config = {
+        "populate_by_name": True,
+        "serialize_by_alias": True,
+    }
+
+    # def model_post_init(self, __context):
+    #     if self.id is not None:
+    #         self._id = URIRef(str(self.id))
 
     def subject(self) -> URIRef | BNode:
-        return self._id if self._id is not None else BNode()
+        return URIRef(str(self.id)) if self.id is not None else BNode()
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -131,6 +137,8 @@ class ObjectProperty:
         self.iri = iri
 
 
+print(json.dumps(ServerInformation.model_json_schema(), indent=4))
+
 server_info = ServerInformation(
     hasServerEndpoint=AnyUrl("https://api.example.com/endpoint"),
     hasDataHolder=Organization(
@@ -151,7 +159,7 @@ result = server_info.serialize(
         }
     },
 )
-print(result)
+# print(result)
 
 
 data = """\
@@ -177,9 +185,9 @@ subject = next(
 server_info_from_graph = ServerInformation.from_graph(g, subject)
 
 
-assert server_info == server_info_from_graph, (
-    "Deserialized object does not match the original"
-)
+assert (
+    server_info == server_info_from_graph
+), "Deserialized object does not match the original"
 
 
 data = """\
