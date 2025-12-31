@@ -3,7 +3,7 @@ This file was automatically generated from the ONE Record API ontology.
 
 Ontology source: https://onerecord.iata.org/ns/cargo/ontology.ttl
 Ontology version: https://onerecord.iata.org/ns/cargo/3.2-rc2
-Generated on: 2025-12-31T01:30:17.571563+00:00
+Generated on: 2025-12-31T20:58:49.476919+00:00
 
 DO NOT EDIT MANUALLY.
 """
@@ -79,13 +79,13 @@ class AccountType(str, Enum):
 
 
 class ActionTimeType(str, Enum):
-    # label: PLANNED
-    # comment: Used when a time is planned
-    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
-
     # label: REQUESTED
     # comment: Used when a time is requested
     REQUESTED = URIRef("https://onerecord.iata.org/ns/cargo#REQUESTED")
+
+    # label: PLANNED
+    # comment: Used when a time is planned
+    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
 
     # label: ACTUAL
     # comment: Used when a time is actual
@@ -93,33 +93,33 @@ class ActionTimeType(str, Enum):
 
 
 class BookingOptionStatus(str, Enum):
-    # label: ON_REQUEST
-    # comment: Used when a booking option proposal is on request
-    ON_REQUEST = URIRef("https://onerecord.iata.org/ns/cargo#ON_REQUEST")
+    # label: NOT_BOOKABLE
+    # comment: Used when a booking option proposal is not bookable
+    NOT_BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NOT_BOOKABLE")
 
-    # label: BOOKABLE
-    # comment: Used when a booking option (or proposal) is bookable
-    BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#BOOKABLE")
-
-    # label: NONBOOKABLE
-    # comment: Used when a booking option is nonbookable
-    NONBOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NONBOOKABLE")
+    # label: BOOKED
+    # comment: Used when a booking option proposal is booked
+    BOOKED = URIRef("https://onerecord.iata.org/ns/cargo#BOOKED")
 
     # label: QUEUED
     # comment: Used when a booking or booking option is queued or pending
     QUEUED = URIRef("https://onerecord.iata.org/ns/cargo#QUEUED")
 
-    # label: NOT_BOOKABLE
-    # comment: Used when a booking option proposal is not bookable
-    NOT_BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NOT_BOOKABLE")
+    # label: BOOKABLE
+    # comment: Used when a booking option (or proposal) is bookable
+    BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#BOOKABLE")
 
     # label: EXPIRED
     # comment: Used when a booking option proposal is expired
     EXPIRED = URIRef("https://onerecord.iata.org/ns/cargo#EXPIRED")
 
-    # label: BOOKED
-    # comment: Used when a booking option proposal is booked
-    BOOKED = URIRef("https://onerecord.iata.org/ns/cargo#BOOKED")
+    # label: ON_REQUEST
+    # comment: Used when a booking option proposal is on request
+    ON_REQUEST = URIRef("https://onerecord.iata.org/ns/cargo#ON_REQUEST")
+
+    # label: NONBOOKABLE
+    # comment: Used when a booking option is nonbookable
+    NONBOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NONBOOKABLE")
 
 
 class BookingStatus(str, Enum):
@@ -127,13 +127,13 @@ class BookingStatus(str, Enum):
     # comment: Used when a booking is deleted
     DELETED = URIRef("https://onerecord.iata.org/ns/cargo#DELETED")
 
-    # label: REJECTED
-    # comment: Used when a booking is rejected
-    REJECTED = URIRef("https://onerecord.iata.org/ns/cargo#REJECTED")
-
     # label: QUEUED
     # comment: Used when a booking or booking option is queued or pending
     QUEUED = URIRef("https://onerecord.iata.org/ns/cargo#QUEUED")
+
+    # label: REJECTED
+    # comment: Used when a booking is rejected
+    REJECTED = URIRef("https://onerecord.iata.org/ns/cargo#REJECTED")
 
     # label: CONFIRMED
     # comment: Used when a booking is confirmed
@@ -157,6 +157,16 @@ class ContactDetailType(str, Enum):
         "https://onerecord.iata.org/ns/cargo#ALTERNATE_EMAIL_ADDRESS"
     )
 
+    # label: PHONE_NUMBER
+    # comment: Indicates a contact detail as phone number
+    PHONE_NUMBER = URIRef("https://onerecord.iata.org/ns/cargo#PHONE_NUMBER")
+
+    # label: ALTERNATE_PHONE_NUMBER
+    # comment: Indicates a contact detail as alternate phone number
+    ALTERNATE_PHONE_NUMBER = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ALTERNATE_PHONE_NUMBER"
+    )
+
     # label: WEBSITE
     # comment: Indicates a contact detail as website
     WEBSITE = URIRef("https://onerecord.iata.org/ns/cargo#WEBSITE")
@@ -164,10 +174,6 @@ class ContactDetailType(str, Enum):
     # label: EMAIL_ADDRESS
     # comment: Indicates a contact detail as email address
     EMAIL_ADDRESS = URIRef("https://onerecord.iata.org/ns/cargo#EMAIL_ADDRESS")
-
-    # label: PHONE_NUMBER
-    # comment: Indicates a contact detail as phone number
-    PHONE_NUMBER = URIRef("https://onerecord.iata.org/ns/cargo#PHONE_NUMBER")
 
     # label: FAX_NUMBER
     # comment: Indicates a contact detail as fax number
@@ -177,25 +183,19 @@ class ContactDetailType(str, Enum):
     # comment: Indicates a contact detail as telex
     TELEX = URIRef("https://onerecord.iata.org/ns/cargo#TELEX")
 
-    # label: ALTERNATE_PHONE_NUMBER
-    # comment: Indicates a contact detail as alternate phone number
-    ALTERNATE_PHONE_NUMBER = URIRef(
-        "https://onerecord.iata.org/ns/cargo#ALTERNATE_PHONE_NUMBER"
-    )
-
 
 class ContactRole(str, Enum):
     # label: EMERGENCY_CONTACT
     # comment: Indicates a contact person as emergency contact
     EMERGENCY_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#EMERGENCY_CONTACT")
 
-    # label: CUSTOMS_CONTACT
-    # comment: Indicates a contact person as customs contact
-    CUSTOMS_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMS_CONTACT")
-
     # label: CUSTOMER_CONTACT
     # comment: Indicates a contact person as customer contact
     CUSTOMER_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMER_CONTACT")
+
+    # label: CUSTOMS_CONTACT
+    # comment: Indicates a contact person as customs contact
+    CUSTOMS_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMS_CONTACT")
 
 
 class DirectionType(str, Enum):
@@ -203,16 +203,24 @@ class DirectionType(str, Enum):
     # comment: Indicates the that the movement time describes an unplanned stop
     UNPLANNED_STOP = URIRef("https://onerecord.iata.org/ns/cargo#UNPLANNED_STOP")
 
-    # label: OUTBOUND
-    # comment: Indicates the described direction in a movement time as outbound
-    OUTBOUND = URIRef("https://onerecord.iata.org/ns/cargo#OUTBOUND")
-
     # label: INBOUND
     # comment: Indicates the described direction in a movement time as inbound
     INBOUND = URIRef("https://onerecord.iata.org/ns/cargo#INBOUND")
 
+    # label: OUTBOUND
+    # comment: Indicates the described direction in a movement time as outbound
+    OUTBOUND = URIRef("https://onerecord.iata.org/ns/cargo#OUTBOUND")
+
 
 class EventTimeType(str, Enum):
+    # label: PLANNED
+    # comment: Used when a time is planned
+    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
+
+    # label: ACTUAL
+    # comment: Used when a time is actual
+    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
+
     # label: REQUESTED
     # comment: Used when a time is requested
     REQUESTED = URIRef("https://onerecord.iata.org/ns/cargo#REQUESTED")
@@ -221,38 +229,34 @@ class EventTimeType(str, Enum):
     # comment: Used when a time is estimated
     ESTIMATED = URIRef("https://onerecord.iata.org/ns/cargo#ESTIMATED")
 
-    # label: PLANNED
-    # comment: Used when a time is planned
-    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
-
     # label: EXPECTED
     # comment: Used when a time is expected
     EXPECTED = URIRef("https://onerecord.iata.org/ns/cargo#EXPECTED")
 
-    # label: ACTUAL
-    # comment: Used when a time is actual
-    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
-
 
 class ExecutionStatus(str, Enum):
-    # label: COMPLETE
-    # comment: Used when a LogisticsActivity is complete
-    COMPLETE = URIRef("https://onerecord.iata.org/ns/cargo#COMPLETE")
-
-    # label: CANCELLED
-    # comment: Used when a LogisticsActivity is cancelled
-    CANCELLED = URIRef("https://onerecord.iata.org/ns/cargo#CANCELLED")
+    # label: ACTIVE
+    # comment: Used when a LogisticsActivity is active
+    ACTIVE = URIRef("https://onerecord.iata.org/ns/cargo#ACTIVE")
 
     # label: PENDING
     # comment: Used when a LogisticsActivity is pending
     PENDING = URIRef("https://onerecord.iata.org/ns/cargo#PENDING")
 
-    # label: ACTIVE
-    # comment: Used when a LogisticsActivity is active
-    ACTIVE = URIRef("https://onerecord.iata.org/ns/cargo#ACTIVE")
+    # label: CANCELLED
+    # comment: Used when a LogisticsActivity is cancelled
+    CANCELLED = URIRef("https://onerecord.iata.org/ns/cargo#CANCELLED")
+
+    # label: COMPLETE
+    # comment: Used when a LogisticsActivity is complete
+    COMPLETE = URIRef("https://onerecord.iata.org/ns/cargo#COMPLETE")
 
 
 class LoadType(str, Enum):
+    # label: PALLET
+    # comment: Indicates the load type as pallet
+    PALLET = URIRef("https://onerecord.iata.org/ns/cargo#PALLET")
+
     # label: UNIT_LOAD_DEVICE
     # comment: Indicates the load type as uld
     UNIT_LOAD_DEVICE = URIRef("https://onerecord.iata.org/ns/cargo#UNIT_LOAD_DEVICE")
@@ -264,10 +268,6 @@ class LoadType(str, Enum):
     # label: LOOSE
     # comment: Indicates the load type as loose
     LOOSE = URIRef("https://onerecord.iata.org/ns/cargo#LOOSE")
-
-    # label: PALLET
-    # comment: Indicates the load type as pallet
-    PALLET = URIRef("https://onerecord.iata.org/ns/cargo#PALLET")
 
 
 class LoadingType(str, Enum):
@@ -285,23 +285,23 @@ class ModeQualifier(str, Enum):
     # comment: Indicates the mode qualifier as on carriage
     ON_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#ON_CARRIAGE")
 
-    # label: MAIN_CARRIAGE
-    # comment: Indicates the mode qualifier as main carriage
-    MAIN_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#MAIN_CARRIAGE")
-
     # label: PRE_CARRIAGE
     # comment: Indicates the mode qualifier as pre carriage
     PRE_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#PRE_CARRIAGE")
 
+    # label: MAIN_CARRIAGE
+    # comment: Indicates the mode qualifier as main carriage
+    MAIN_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#MAIN_CARRIAGE")
+
 
 class MovementTimeType(str, Enum):
-    # label: SCHEDULED
-    # comment: Used when a time is scheduled
-    SCHEDULED = URIRef("https://onerecord.iata.org/ns/cargo#SCHEDULED")
-
     # label: ESTIMATED
     # comment: Used when a time is estimated
     ESTIMATED = URIRef("https://onerecord.iata.org/ns/cargo#ESTIMATED")
+
+    # label: SCHEDULED
+    # comment: Used when a time is scheduled
+    SCHEDULED = URIRef("https://onerecord.iata.org/ns/cargo#SCHEDULED")
 
     # label: ACTUAL
     # comment: Used when a time is actual
@@ -309,29 +309,13 @@ class MovementTimeType(str, Enum):
 
 
 class SensorType(str, Enum):
-    # label: PRESSURE
-    # comment: Indicates the sensor type as pressure
-    PRESSURE = URIRef("https://onerecord.iata.org/ns/cargo#PRESSURE")
-
-    # label: LIGHT
-    # comment: Indicates the sensor type as light
-    LIGHT = URIRef("https://onerecord.iata.org/ns/cargo#LIGHT")
+    # label: VIBRATION
+    # comment: Indicates the sensor type as vibration
+    VIBRATION = URIRef("https://onerecord.iata.org/ns/cargo#VIBRATION")
 
     # label: GEOLOCATION
     # comment: Indicates the sensor type as geolocation
     GEOLOCATION = URIRef("https://onerecord.iata.org/ns/cargo#GEOLOCATION")
-
-    # label: HUMIDITY
-    # comment: Indicates the sensor type as humidity
-    HUMIDITY = URIRef("https://onerecord.iata.org/ns/cargo#HUMIDITY")
-
-    # label: ACCELEROMETER
-    # comment: Indicates the sensor type as accelerometer
-    ACCELEROMETER = URIRef("https://onerecord.iata.org/ns/cargo#ACCELEROMETER")
-
-    # label: VIBRATION
-    # comment: Indicates the sensor type as vibration
-    VIBRATION = URIRef("https://onerecord.iata.org/ns/cargo#VIBRATION")
 
     # label: THERMOMETER
     # comment: Indicates the sensor type as thermometer
@@ -341,25 +325,41 @@ class SensorType(str, Enum):
     # comment: Indicates the sensor type as tilt
     TILT = URIRef("https://onerecord.iata.org/ns/cargo#TILT")
 
+    # label: PRESSURE
+    # comment: Indicates the sensor type as pressure
+    PRESSURE = URIRef("https://onerecord.iata.org/ns/cargo#PRESSURE")
+
+    # label: HUMIDITY
+    # comment: Indicates the sensor type as humidity
+    HUMIDITY = URIRef("https://onerecord.iata.org/ns/cargo#HUMIDITY")
+
+    # label: LIGHT
+    # comment: Indicates the sensor type as light
+    LIGHT = URIRef("https://onerecord.iata.org/ns/cargo#LIGHT")
+
+    # label: ACCELEROMETER
+    # comment: Indicates the sensor type as accelerometer
+    ACCELEROMETER = URIRef("https://onerecord.iata.org/ns/cargo#ACCELEROMETER")
+
 
 class StoringType(str, Enum):
-    # label: STORE_IN
-    # comment: Describes a store-in process, where a physical object is assigned to a specific location
-    STORE_IN = URIRef("https://onerecord.iata.org/ns/cargo#STORE_IN")
-
     # label: STORE_OUT
     # comment: Describes a store-out process, where a physical object leaves a specific location
     STORE_OUT = URIRef("https://onerecord.iata.org/ns/cargo#STORE_OUT")
 
+    # label: STORE_IN
+    # comment: Describes a store-in process, where a physical object is assigned to a specific location
+    STORE_IN = URIRef("https://onerecord.iata.org/ns/cargo#STORE_IN")
+
 
 class WaybillType(str, Enum):
-    # label: DIRECT
-    # comment: Indicates a Direct waybill
-    DIRECT = URIRef("https://onerecord.iata.org/ns/cargo#DIRECT")
-
     # label: HOUSE
     # comment: Indicates a House Waybill
     HOUSE = URIRef("https://onerecord.iata.org/ns/cargo#HOUSE")
+
+    # label: DIRECT
+    # comment: Indicates a Direct waybill
+    DIRECT = URIRef("https://onerecord.iata.org/ns/cargo#DIRECT")
 
     # label: MASTER
     # comment: Indicates a Master Waybill
@@ -367,6 +367,9 @@ class WaybillType(str, Enum):
 
 
 class AccountNumber(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#AccountNumber"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#AccountNumber"),
     ]
@@ -387,6 +390,9 @@ class AccountNumber(OneRecordBaseModel):
 
 
 class AccountingNote(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#AccountingNote"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#AccountingNote"),
     ]
@@ -407,6 +413,9 @@ class AccountingNote(OneRecordBaseModel):
 
 
 class ActivitySequence(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ActivitySequence"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ActivitySequence"),
     ]
@@ -427,6 +436,7 @@ class ActivitySequence(OneRecordBaseModel):
 
 
 class Address(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Address")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Address"),
     ]
@@ -496,6 +506,7 @@ class Address(OneRecordBaseModel):
 
 
 class Adjustments(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Adjustments")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Adjustments"),
     ]
@@ -523,6 +534,9 @@ class Adjustments(OneRecordBaseModel):
 
 
 class BookingPreferences(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingPreferences"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingPreferences"),
     ]
@@ -573,6 +587,9 @@ class BookingPreferences(OneRecordBaseModel):
 
 
 class BookingSegment(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingSegment"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingSegment"),
     ]
@@ -607,6 +624,7 @@ class BookingSegment(OneRecordBaseModel):
 
 
 class BookingTimes(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#BookingTimes")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingTimes"),
     ]
@@ -648,6 +666,9 @@ class BookingTimes(OneRecordBaseModel):
 
 
 class CarrierProduct(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CarrierProduct"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CarrierProduct"),
     ]
@@ -675,6 +696,9 @@ class CarrierProduct(OneRecordBaseModel):
 
 
 class Characteristic(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#Characteristic"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Characteristic"),
     ]
@@ -695,6 +719,9 @@ class Characteristic(OneRecordBaseModel):
 
 
 class CodeListElement(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CodeListElement"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CodeListElement"),
     ]
@@ -743,6 +770,9 @@ class CodeListElement(OneRecordBaseModel):
 
 
 class ContactDetail(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ContactDetail"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ContactDetail"),
     ]
@@ -763,6 +793,9 @@ class ContactDetail(OneRecordBaseModel):
 
 
 class CurrencyValue(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CurrencyValue"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CurrencyValue"),
     ]
@@ -783,6 +816,7 @@ class CurrencyValue(OneRecordBaseModel):
 
 
 class Dimensions(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Dimensions")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Dimensions"),
     ]
@@ -817,6 +851,7 @@ class Dimensions(OneRecordBaseModel):
 
 
 class Geolocation(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Geolocation")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Geolocation"),
     ]
@@ -844,6 +879,9 @@ class Geolocation(OneRecordBaseModel):
 
 
 class LineItemPackage(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LineItemPackage"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LineItemPackage"),
     ]
@@ -878,6 +916,9 @@ class LineItemPackage(OneRecordBaseModel):
 
 
 class LogisticsEvent(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LogisticsEvent"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsEvent"),
     ]
@@ -968,6 +1009,9 @@ class LogisticsEvent(OneRecordBaseModel):
 
 
 class LogisticsObject(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LogisticsObject"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
     ]
@@ -1002,6 +1046,7 @@ class LogisticsObject(OneRecordBaseModel):
 
 
 class Measurement(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Measurement")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Measurement"),
     ]
@@ -1029,6 +1074,7 @@ class Measurement(OneRecordBaseModel):
 
 
 class MovementTime(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#MovementTime")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#MovementTime"),
     ]
@@ -1063,6 +1109,7 @@ class MovementTime(OneRecordBaseModel):
 
 
 class OtherCharge(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#OtherCharge")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#OtherCharge"),
     ]
@@ -1118,6 +1165,9 @@ class OtherCharge(OneRecordBaseModel):
 
 
 class OtherIdentifier(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#OtherIdentifier"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#OtherIdentifier"),
     ]
@@ -1138,6 +1188,7 @@ class OtherIdentifier(OneRecordBaseModel):
 
 
 class Party(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Party")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Party"),
     ]
@@ -1172,6 +1223,7 @@ class Party(OneRecordBaseModel):
 
 
 class PieceGroup(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup"),
     ]
@@ -1206,6 +1258,7 @@ class PieceGroup(OneRecordBaseModel):
 
 
 class Ranges(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Ranges")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Ranges"),
     ]
@@ -1247,6 +1300,9 @@ class Ranges(OneRecordBaseModel):
 
 
 class RegulatedEntity(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#RegulatedEntity"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#RegulatedEntity"),
     ]
@@ -1283,6 +1339,9 @@ class RegulatedEntity(OneRecordBaseModel):
 
 
 class StationRemarks(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#StationRemarks"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#StationRemarks"),
     ]
@@ -1303,6 +1362,9 @@ class StationRemarks(OneRecordBaseModel):
 
 
 class TemperatureInstructions(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#TemperatureInstructions"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#TemperatureInstructions"),
     ]
@@ -1323,6 +1385,9 @@ class TemperatureInstructions(OneRecordBaseModel):
 
 
 class UnitsPreference(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#UnitsPreference"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#UnitsPreference"),
     ]
@@ -1364,6 +1429,7 @@ class UnitsPreference(OneRecordBaseModel):
 
 
 class Value(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Value")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Value"),
     ]
@@ -1384,6 +1450,9 @@ class Value(OneRecordBaseModel):
 
 
 class VolumetricWeight(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#VolumetricWeight"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#VolumetricWeight"),
     ]
@@ -1404,6 +1473,9 @@ class VolumetricWeight(OneRecordBaseModel):
 
 
 class WaybillLineItem(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#WaybillLineItem"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#WaybillLineItem"),
     ]
@@ -1508,6 +1580,7 @@ class WaybillLineItem(OneRecordBaseModel):
 
 
 class Answer(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Answer")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Answer"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -1557,6 +1630,9 @@ class Answer(LogisticsObject):
 
 
 class BillingDetails(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BillingDetails"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BillingDetails"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -1669,6 +1745,9 @@ class BillingDetails(LogisticsObject):
 
 
 class BookingOption(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingOption"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingOption"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -1781,6 +1860,9 @@ class BookingOption(LogisticsObject):
 
 
 class BookingOptionRequest(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingOptionRequest"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingOptionRequest"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -1858,6 +1940,9 @@ class BookingOptionRequest(LogisticsObject):
 
 
 class BookingRequest(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingRequest"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingRequest"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -1895,6 +1980,9 @@ class BookingRequest(LogisticsObject):
 
 
 class BookingShipment(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#BookingShipment"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#BookingShipment"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2002,6 +2090,7 @@ class BookingShipment(LogisticsObject):
 
 
 class CO2Emissions(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#CO2Emissions")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CO2Emissions"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2037,6 +2126,9 @@ class CO2Emissions(LogisticsObject):
 
 
 class CheckTemplate(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CheckTemplate"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CheckTemplate"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2100,6 +2192,9 @@ class CheckTemplate(LogisticsObject):
 
 
 class CheckTotalResult(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CheckTotalResult"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CheckTotalResult"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2141,6 +2236,9 @@ class CheckTotalResult(LogisticsObject):
 
 
 class CustomsInformation(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#CustomsInformation"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#CustomsInformation"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2204,6 +2302,9 @@ class CustomsInformation(LogisticsObject):
 
 
 class DgDeclaration(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#DgDeclaration"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#DgDeclaration"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2288,6 +2389,9 @@ class DgDeclaration(LogisticsObject):
 
 
 class DgProductRadioactive(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#DgProductRadioactive"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#DgProductRadioactive"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2337,6 +2441,9 @@ class DgProductRadioactive(LogisticsObject):
 
 
 class DgRadioactiveIsotope(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#DgRadioactiveIsotope"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#DgRadioactiveIsotope"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2404,6 +2511,9 @@ class DgRadioactiveIsotope(LogisticsObject):
 
 
 class EpermitConsignment(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#EpermitConsignment"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#EpermitConsignment"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2439,6 +2549,9 @@ class EpermitConsignment(LogisticsObject):
 
 
 class EpermitSignature(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#EpermitSignature"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#EpermitSignature"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2495,6 +2608,9 @@ class EpermitSignature(LogisticsObject):
 
 
 class ExternalReference(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ExternalReference"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ExternalReference"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2579,6 +2695,7 @@ class ExternalReference(LogisticsObject):
 
 
 class Insurance(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Insurance")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Insurance"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2607,6 +2724,9 @@ class Insurance(LogisticsObject):
 
 
 class LiveAnimalsEpermit(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LiveAnimalsEpermit"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LiveAnimalsEpermit"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2712,6 +2832,9 @@ class LiveAnimalsEpermit(LogisticsObject):
 
 
 class LogisticsAction(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LogisticsAction"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAction"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2775,6 +2898,9 @@ class LogisticsAction(LogisticsObject):
 
 
 class LogisticsActivity(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LogisticsActivity"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsActivity"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2821,6 +2947,9 @@ class LogisticsAgent(LogisticsObject):
 
 
 class LogisticsService(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LogisticsService"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsService"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2849,6 +2978,9 @@ class LogisticsService(LogisticsObject):
 
 
 class PackagingType(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#PackagingType"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#PackagingType"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2877,6 +3009,9 @@ class PackagingType(LogisticsObject):
 
 
 class PhysicalLogisticsObject(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2898,6 +3033,7 @@ class PhysicalLogisticsObject(LogisticsObject):
 
 
 class Price(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Price")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Price"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -2933,6 +3069,7 @@ class Price(LogisticsObject):
 
 
 class Product(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Product")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Product"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3017,6 +3154,7 @@ class Product(LogisticsObject):
 
 
 class Question(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Question")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Question"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3080,6 +3218,7 @@ class Question(LogisticsObject):
 
 
 class Ratings(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Ratings")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Ratings"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3178,6 +3317,9 @@ class Ratings(LogisticsObject):
 
 
 class SecurityDeclaration(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#SecurityDeclaration"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#SecurityDeclaration"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3269,6 +3411,7 @@ class SecurityDeclaration(LogisticsObject):
 
 
 class Shipment(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Shipment")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Shipment"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3346,6 +3489,9 @@ class Shipment(LogisticsObject):
 
 
 class TransportLegs(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#TransportLegs"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#TransportLegs"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3425,6 +3571,7 @@ class TransportLegs(LogisticsObject):
 
 
 class Waybill(LogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Waybill")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Waybill"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsObject"),
@@ -3660,6 +3807,7 @@ class Waybill(LogisticsObject):
 
 
 class LoosePiece(PieceGroup):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#LoosePiece")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LoosePiece"),
         URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup"),
@@ -3716,6 +3864,9 @@ class LoosePiece(PieceGroup):
 
 
 class ULDBasicPiece(PieceGroup):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ULDBasicPiece"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ULDBasicPiece"),
         URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup"),
@@ -3737,6 +3888,9 @@ class ULDBasicPiece(PieceGroup):
 
 
 class ULDSpecificPiece(PieceGroup):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ULDSpecificPiece"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ULDSpecificPiece"),
         URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup"),
@@ -3772,6 +3926,9 @@ class ULDSpecificPiece(PieceGroup):
 
 
 class VolumePieceGroup(PieceGroup):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#VolumePieceGroup"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#VolumePieceGroup"),
         URIRef("https://onerecord.iata.org/ns/cargo#PieceGroup"),
@@ -3786,6 +3943,7 @@ class VolumePieceGroup(PieceGroup):
 
 
 class Check(LogisticsAction):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Check")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Check"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAction"),
@@ -3821,6 +3979,7 @@ class Check(LogisticsAction):
 
 
 class Composing(LogisticsAction):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Composing")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Composing"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAction"),
@@ -3856,6 +4015,7 @@ class Composing(LogisticsAction):
 
 
 class Loading(LogisticsAction):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Loading")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Loading"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAction"),
@@ -3905,6 +4065,7 @@ class Loading(LogisticsAction):
 
 
 class Storing(LogisticsAction):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Storing")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Storing"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAction"),
@@ -3933,6 +4094,7 @@ class Storing(LogisticsAction):
 
 
 class Storage(LogisticsActivity):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Storage")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Storage"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsActivity"),
@@ -3954,6 +4116,9 @@ class Storage(LogisticsActivity):
 
 
 class TransportMovement(LogisticsActivity):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#TransportMovement"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#TransportMovement"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsActivity"),
@@ -4073,6 +4238,9 @@ class TransportMovement(LogisticsActivity):
 
 
 class UnitComposition(LogisticsActivity):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#UnitComposition"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#UnitComposition"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsActivity"),
@@ -4108,6 +4276,7 @@ class UnitComposition(LogisticsActivity):
 
 
 class Actor(LogisticsAgent):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Actor")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Actor"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAgent"),
@@ -4122,6 +4291,7 @@ class Actor(LogisticsAgent):
 
 
 class Organization(LogisticsAgent):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Organization")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Organization"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsAgent"),
@@ -4178,6 +4348,7 @@ class Organization(LogisticsAgent):
 
 
 class Booking(LogisticsService):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Booking")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Booking"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsService"),
@@ -4313,6 +4484,9 @@ class Booking(LogisticsService):
 
 
 class HandlingService(LogisticsService):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#HandlingService"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#HandlingService"),
         URIRef("https://onerecord.iata.org/ns/cargo#LogisticsService"),
@@ -4347,6 +4521,7 @@ class HandlingService(LogisticsService):
 
 
 class IotDevice(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#IotDevice")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#IotDevice"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4403,6 +4578,7 @@ class IotDevice(PhysicalLogisticsObject):
 
 
 class Item(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Item")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Item"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4508,6 +4684,9 @@ class Item(PhysicalLogisticsObject):
 
 
 class LoadingMaterial(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#LoadingMaterial"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LoadingMaterial"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4557,6 +4736,7 @@ class LoadingMaterial(PhysicalLogisticsObject):
 
 
 class LoadingUnit(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#LoadingUnit")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#LoadingUnit"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4584,6 +4764,7 @@ class LoadingUnit(PhysicalLogisticsObject):
 
 
 class Location(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Location")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Location"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4645,6 +4826,7 @@ class Location(PhysicalLogisticsObject):
 
 
 class Piece(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Piece")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Piece"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4857,6 +5039,7 @@ class Piece(PhysicalLogisticsObject):
 
 
 class Sensor(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Sensor")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Sensor"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4906,6 +5089,9 @@ class Sensor(PhysicalLogisticsObject):
 
 
 class TransportMeans(PhysicalLogisticsObject):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#TransportMeans"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#TransportMeans"),
         URIRef("https://onerecord.iata.org/ns/cargo#PhysicalLogisticsObject"),
@@ -4969,6 +5155,7 @@ class TransportMeans(PhysicalLogisticsObject):
 
 
 class ProductDg(Product):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#ProductDg")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ProductDg"),
         URIRef("https://onerecord.iata.org/ns/cargo#Product"),
@@ -5061,6 +5248,7 @@ class NonHumanActor(Actor):
 
 
 class Person(Actor):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Person")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Person"),
         URIRef("https://onerecord.iata.org/ns/cargo#Actor"),
@@ -5138,6 +5326,7 @@ class Person(Actor):
 
 
 class Company(Organization):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Company")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Company"),
         URIRef("https://onerecord.iata.org/ns/cargo#Organization"),
@@ -5165,6 +5354,7 @@ class PublicAuthority(Organization):
 
 
 class ItemDg(Item):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#ItemDg")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ItemDg"),
         URIRef("https://onerecord.iata.org/ns/cargo#Item"),
@@ -5207,6 +5397,7 @@ class ItemDg(Item):
 
 
 class ULD(LoadingUnit):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#ULD")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#ULD"),
         URIRef("https://onerecord.iata.org/ns/cargo#LoadingUnit"),
@@ -5312,6 +5503,7 @@ class ULD(LoadingUnit):
 
 
 class PieceDg(Piece):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#PieceDg")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#PieceDg"),
         URIRef("https://onerecord.iata.org/ns/cargo#Piece"),
@@ -5368,6 +5560,9 @@ class PieceDg(Piece):
 
 
 class PieceLiveAnimals(Piece):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/cargo#PieceLiveAnimals"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#PieceLiveAnimals"),
         URIRef("https://onerecord.iata.org/ns/cargo#Piece"),
@@ -5487,6 +5682,7 @@ class PieceLiveAnimals(Piece):
 
 
 class Carrier(Company):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/cargo#Carrier")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/cargo#Carrier"),
         URIRef("https://onerecord.iata.org/ns/cargo#Company"),
@@ -5507,3 +5703,10 @@ class Carrier(Company):
         default=None,
         max_length=3,
     )
+
+
+for _cls in list(locals().values()):
+    if isinstance(_cls, type) and issubclass(_cls, OneRecordBaseModel):
+        result = _cls.model_rebuild()
+        if result is False:
+            raise RuntimeError(f"Failed to rebuild model for class {_cls.__name__}")

@@ -1,12 +1,13 @@
-from typing import ClassVar, List, get_args, get_origin
+from typing import Any, ClassVar, List, Optional, Self, Union, get_args, get_origin
 
 from pydantic import AnyUrl, BaseModel, Field, computed_field
 from rdflib import RDF, BNode, Graph, Literal, URIRef
 
-from one_record_ontology.utils.graph_utils import SubjectType
+from one_record_ontology.utils.graph_utils import SubjectType, get_root_subject
 
 
 class OneRecordBaseModel(BaseModel):
+    _type: ClassVar[URIRef]
     _types: ClassVar[List[URIRef]]
     subject: SubjectType = Field(default_factory=BNode, exclude=True)
 
@@ -37,6 +38,58 @@ class OneRecordBaseModel(BaseModel):
                 f"{cls.__name__} must define a non-empty class attribute `_types`"
             )
 
+    @classmethod
+    def from_graph(cls, g: Graph, subject: Optional[SubjectType] = None) -> Self:
+        if subject is None:
+            subject = get_root_subject(g, cls._type)
+
+        kwargs: dict[str, Any] = {}
+
+        for name, field in cls.model_fields.items():
+            if field.annotation is None:
+                raise TypeError(f"Field {name} has no annotation")
+
+            if field.serialization_alias is None:
+                continue
+
+            annotation = field.annotation
+            origin = get_origin(annotation)
+            if origin is list or origin is Union:
+                (base_type, *_) = get_args(annotation)
+            else:
+                base_type = annotation
+
+            field_uri = URIRef(field.serialization_alias)
+
+            if issubclass(base_type, OneRecordBaseModel):
+                if origin is not list:
+                    obj_node = g.value(subject, field_uri)
+                    if obj_node is not None:
+                        obj = base_type.from_graph(g, obj_node)
+                        kwargs[name] = obj
+                else:
+                    objs = []
+                    for obj_node in g.objects(subject, field_uri):
+                        obj = base_type.from_graph(g, obj_node)
+                        objs.append(obj)
+                    kwargs[name] = objs
+            else:
+                if origin is not list:
+                    value = g.value(subject, field_uri)
+                    if isinstance(value, Literal):
+                        kwargs[name] = value.toPython()
+                else:
+                    values: list[Any] = []
+                    for obj in g.objects(subject, field_uri):
+                        if isinstance(obj, Literal):
+                            values.append(obj.toPython())
+                    kwargs[name] = values
+
+        result = cls(**kwargs)
+        result.subject = subject
+
+        return result
+
     def to_graph(self) -> Graph:
         g = Graph()
 
@@ -50,15 +103,12 @@ class OneRecordBaseModel(BaseModel):
             if field.serialization_alias is None:
                 continue
 
-            origin = get_origin(field.annotation)
-            args = get_args(field.annotation)
-
-            if len(args) == 0:
-                base_type = field.annotation
-            elif len(args) == 1:
-                base_type = args[0]
+            annotation = field.annotation
+            origin = get_origin(annotation)
+            if origin is list or origin is Union:
+                (base_type, *_) = get_args(annotation)
             else:
-                base_type, *meta = args
+                base_type = annotation
 
             value = getattr(self, name)
 

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from pydantic import AnyUrl
 from rdflib import URIRef
 
@@ -10,6 +10,7 @@ app = FastAPI()
 
 @app.get(
     "/",
+    # response_class=Response,
     response_model=ServerInformation,
 )
 async def read_root(request: Request):
@@ -39,13 +40,14 @@ async def read_root(request: Request):
         hasSupportedOntologyVersion=[],
     )
 
-    return Response(
-        content=server_info.to_graph().serialize(
-            format="json-ld",
-            context={
-                "api": "https://onerecord.iata.org/ns/api#",
-                "cargo": "https://onerecord.iata.org/ns/cargo#",
-            },
-        ),
-        media_type="application/ld+json",
-    )
+    # return Response(
+    #     content=server_info.to_graph().serialize(
+    #         format="json-ld",
+    #         context={
+    #             "api": "https://onerecord.iata.org/ns/api#",
+    #             "cargo": "https://onerecord.iata.org/ns/cargo#",
+    #         },
+    #     ),
+    #     media_type="application/ld+json",
+    # )
+    return server_info

@@ -279,6 +279,7 @@ for module_name, url in MODULE_TO_ONTOLOGY.items():
         type_uris = []
         for t in [cls, *parents[cls]]:
             type_uris.append(f'URIRef("{t}")')
+        class_lines.append(f'    _type: ClassVar[URIRef] = URIRef("{cls}")')
         class_lines.append(
             f"    _types: ClassVar[List[URIRef]] = [{', '.join(type_uris)},]\n"
         )
@@ -389,8 +390,21 @@ for module_name, url in MODULE_TO_ONTOLOGY.items():
                 class_lines.append(f"    # comment: {comment_str}")
             class_lines.append(property_definition)
 
+    footer_lines = [
+        "for _cls in list(locals().values()):",
+        "    if isinstance(_cls, type) and issubclass(_cls, OneRecordBaseModel):",
+        "        result = _cls.model_rebuild()",
+        "        if result is False:",
+        "            raise RuntimeError(f'Failed to rebuild model for class {_cls.__name__}')",
+    ]
+
     file_lines = (
-        docstring_lines + header_lines + list(import_lines) + enum_lines + class_lines
+        docstring_lines
+        + header_lines
+        + list(import_lines)
+        + enum_lines
+        + class_lines
+        + footer_lines
     )
     OUT_DIR.joinpath(f"{module_name}.py").write_text(
         "\n".join(file_lines), encoding="utf-8"

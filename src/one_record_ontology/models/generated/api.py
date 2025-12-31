@@ -3,7 +3,7 @@ This file was automatically generated from the ONE Record API ontology.
 
 Ontology source: https://onerecord.iata.org/ns/api/ontology.ttl
 Ontology version: https://onerecord.iata.org/ns/api/2.2.0
-Generated on: 2025-12-31T01:30:17.193669+00:00
+Generated on: 2025-12-31T20:58:49.116514+00:00
 
 DO NOT EDIT MANUALLY.
 """
@@ -27,9 +27,25 @@ from one_record_ontology.models.generated.cargo import (
 
 
 class NotificationEventType(str, Enum):
-    # label: ACCESS_DELEGATION_REQUEST_ACCEPTED
-    ACCESS_DELEGATION_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_ACCEPTED"
+    # label: LOGISTICS_OBJECT_CREATED
+    LOGISTICS_OBJECT_CREATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
+    )
+
+    # label: CHANGE_REQUEST_ACCEPTED
+    # comment: :EventType for accepted :ChangeRequests
+    CHANGE_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_ACCEPTED"
+    )
+
+    # label: VERIFICATION_REQUEST_ACKNOWLEDGED
+    VERIFICATION_REQUEST_ACKNOWLEDGED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_ACKNOWLEDGED"
+    )
+
+    # label: LOGISTICS_OBJECT_ACCESS_GRANTED
+    LOGISTICS_OBJECT_ACCESS_GRANTED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_ACCESS_GRANTED"
     )
 
     # label: LOGISTICS_OBJECT_AVAILABLE
@@ -37,24 +53,9 @@ class NotificationEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_AVAILABLE"
     )
 
-    # label: CHANGE_REQUEST_PENDING
-    CHANGE_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REJECTED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_REVOKED
-    SUBSCRIPTION_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REVOKED"
-    )
-
-    # label: VERIFICATION_REQUEST_REVOKED
-    VERIFICATION_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REVOKED"
-    )
-
-    # label: ACCESS_DELEGATION_REQUEST_REJECTED
-    ACCESS_DELEGATION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REJECTED"
+    # label: CHANGE_REQUEST_REVOKED
+    CHANGE_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REVOKED"
     )
 
     # label: ACCESS_DELEGATION_REQUEST_PENDING
@@ -67,39 +68,14 @@ class NotificationEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_PENDING"
     )
 
-    # label: SUBSCRIPTION_REQUEST_ACCEPTED
-    SUBSCRIPTION_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_ACCEPTED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_REJECTED
-    SUBSCRIPTION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REJECTED"
-    )
-
-    # label: VERIFICATION_REQUEST_FAILED
-    VERIFICATION_REQUEST_FAILED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_FAILED"
-    )
-
-    # label: LOGISTICS_OBJECT_UPDATED
-    LOGISTICS_OBJECT_UPDATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_FAILED
-    SUBSCRIPTION_REQUEST_FAILED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_FAILED"
-    )
-
-    # label: CHANGE_REQUEST_REVOKED
-    CHANGE_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REVOKED"
-    )
-
     # label: LOGISTICS_EVENT_RECEIVED
     LOGISTICS_EVENT_RECEIVED = URIRef(
         "https://onerecord.iata.org/ns/api#LOGISTICS_EVENT_RECEIVED"
+    )
+
+    # label: ACCESS_DELEGATION_REQUEST_REJECTED
+    ACCESS_DELEGATION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REJECTED"
     )
 
     # label: CHANGE_REQUEST_FAILED
@@ -108,30 +84,9 @@ class NotificationEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_FAILED"
     )
 
-    # label: SUBSCRIPTION_REQUEST_PENDING
-    SUBSCRIPTION_REQUEST_PENDING = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_PENDING"
-    )
-
-    # label: ACCESS_DELEGATION_REQUEST_REVOKED
-    ACCESS_DELEGATION_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REVOKED"
-    )
-
-    # label: VERIFICATION_REQUEST_REJECTED
-    VERIFICATION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REJECTED"
-    )
-
-    # label: LOGISTICS_OBJECT_CREATED
-    LOGISTICS_OBJECT_CREATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
-    )
-
-    # label: CHANGE_REQUEST_ACCEPTED
-    # comment: :EventType for accepted :ChangeRequests
-    CHANGE_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_ACCEPTED"
+    # label: SUBSCRIPTION_REQUEST_ACCEPTED
+    SUBSCRIPTION_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_ACCEPTED"
     )
 
     # label: CHANGE_REQUEST_PENDING
@@ -140,19 +95,64 @@ class NotificationEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_PENDING"
     )
 
+    # label: CHANGE_REQUEST_PENDING
+    CHANGE_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REJECTED"
+    )
+
+    # label: VERIFICATION_REQUEST_FAILED
+    VERIFICATION_REQUEST_FAILED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_FAILED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_PENDING
+    SUBSCRIPTION_REQUEST_PENDING = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_PENDING"
+    )
+
+    # label: LOGISTICS_OBJECT_UPDATED
+    LOGISTICS_OBJECT_UPDATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
+    )
+
     # label: ACCESS_DELEGATION_REQUEST_FAILED
     ACCESS_DELEGATION_REQUEST_FAILED = URIRef(
         "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_FAILED"
     )
 
-    # label: VERIFICATION_REQUEST_ACKNOWLEDGED
-    VERIFICATION_REQUEST_ACKNOWLEDGED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_ACKNOWLEDGED"
+    # label: ACCESS_DELEGATION_REQUEST_REVOKED
+    ACCESS_DELEGATION_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REVOKED"
     )
 
-    # label: LOGISTICS_OBJECT_ACCESS_GRANTED
-    LOGISTICS_OBJECT_ACCESS_GRANTED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_ACCESS_GRANTED"
+    # label: VERIFICATION_REQUEST_REVOKED
+    VERIFICATION_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REVOKED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_REVOKED
+    SUBSCRIPTION_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REVOKED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_FAILED
+    SUBSCRIPTION_REQUEST_FAILED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_FAILED"
+    )
+
+    # label: ACCESS_DELEGATION_REQUEST_ACCEPTED
+    ACCESS_DELEGATION_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_ACCEPTED"
+    )
+
+    # label: VERIFICATION_REQUEST_REJECTED
+    VERIFICATION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REJECTED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_REJECTED
+    SUBSCRIPTION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REJECTED"
     )
 
 
@@ -166,21 +166,16 @@ class PatchOperation(str, Enum):
 
 
 class Permission(str, Enum):
-    # label: GET_LOGISTICS_EVENT
-    # comment: :Permission to get a :LogisticsEvent
-    GET_LOGISTICS_EVENT = URIRef(
-        "https://onerecord.iata.org/ns/api#GET_LOGISTICS_EVENT"
-    )
-
-    # label: PATCH_LOGISTICS_OBJECT
-    PATCH_LOGISTICS_OBJECT = URIRef(
-        "https://onerecord.iata.org/ns/api#PATCH_LOGISTICS_OBJECT"
-    )
-
     # label: GET_LOGISTICS_OBJECT
     # comment: :Permission to get a :LogisticsObject
     GET_LOGISTICS_OBJECT = URIRef(
         "https://onerecord.iata.org/ns/api#GET_LOGISTICS_OBJECT"
+    )
+
+    # label: GET_LOGISTICS_EVENT
+    # comment: :Permission to get a :LogisticsEvent
+    GET_LOGISTICS_EVENT = URIRef(
+        "https://onerecord.iata.org/ns/api#GET_LOGISTICS_EVENT"
     )
 
     # label: POST_LOGISTICS_EVENT
@@ -189,30 +184,40 @@ class Permission(str, Enum):
         "https://onerecord.iata.org/ns/api#POST_LOGISTICS_EVENT"
     )
 
+    # label: PATCH_LOGISTICS_OBJECT
+    PATCH_LOGISTICS_OBJECT = URIRef(
+        "https://onerecord.iata.org/ns/api#PATCH_LOGISTICS_OBJECT"
+    )
+
 
 class RequestStatus(str, Enum):
-    # label: REQUEST_PENDING
-    REQUEST_PENDING = URIRef("https://onerecord.iata.org/ns/api#REQUEST_PENDING")
-
-    # label: REQUEST_FAILED
-    REQUEST_FAILED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_FAILED")
+    # label: REQUEST_REVOKED
+    REQUEST_REVOKED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REVOKED")
 
     # label: REQUEST_ACKNOWLEDGED
     REQUEST_ACKNOWLEDGED = URIRef(
         "https://onerecord.iata.org/ns/api#REQUEST_ACKNOWLEDGED"
     )
 
-    # label: REQUEST_REJECTED
-    REQUEST_REJECTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REJECTED")
-
-    # label: REQUEST_REVOKED
-    REQUEST_REVOKED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REVOKED")
-
     # label: REQUEST_ACCEPTED
     REQUEST_ACCEPTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED")
 
+    # label: REQUEST_REJECTED
+    REQUEST_REJECTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REJECTED")
+
+    # label: REQUEST_FAILED
+    REQUEST_FAILED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_FAILED")
+
+    # label: REQUEST_PENDING
+    REQUEST_PENDING = URIRef("https://onerecord.iata.org/ns/api#REQUEST_PENDING")
+
 
 class SubscriptionEventType(str, Enum):
+    # label: LOGISTICS_OBJECT_CREATED
+    LOGISTICS_OBJECT_CREATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
+    )
+
     # label: LOGISTICS_EVENT_RECEIVED
     LOGISTICS_EVENT_RECEIVED = URIRef(
         "https://onerecord.iata.org/ns/api#LOGISTICS_EVENT_RECEIVED"
@@ -223,25 +228,23 @@ class SubscriptionEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
     )
 
-    # label: LOGISTICS_OBJECT_CREATED
-    LOGISTICS_OBJECT_CREATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
-    )
-
 
 class TopicType(str, Enum):
-    # label: LOGISTICS_OBJECT_TYPE
-    LOGISTICS_OBJECT_TYPE = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_TYPE"
-    )
-
     # label: LOGISTICS_OBJECT_IDENTIFIER
     LOGISTICS_OBJECT_IDENTIFIER = URIRef(
         "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_IDENTIFIER"
     )
 
+    # label: LOGISTICS_OBJECT_TYPE
+    LOGISTICS_OBJECT_TYPE = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_TYPE"
+    )
+
 
 class AccessDelegation(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#AccessDelegation"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#AccessDelegation"),
     ]
@@ -277,6 +280,7 @@ class AccessDelegation(OneRecordBaseModel):
 
 
 class ActionRequest(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#ActionRequest")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#ActionRequest"),
     ]
@@ -320,6 +324,7 @@ class ActionRequest(OneRecordBaseModel):
 
 
 class AuditTrail(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#AuditTrail")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#AuditTrail"),
     ]
@@ -339,6 +344,7 @@ class AuditTrail(OneRecordBaseModel):
 
 
 class Change(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Change")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Change"),
     ]
@@ -383,6 +389,7 @@ class Change(OneRecordBaseModel):
 
 
 class Collection(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Collection")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Collection"),
     ]
@@ -402,6 +409,7 @@ class Collection(OneRecordBaseModel):
 
 
 class Error(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Error")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Error"),
     ]
@@ -420,6 +428,7 @@ class Error(OneRecordBaseModel):
 
 
 class ErrorDetail(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#ErrorDetail")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#ErrorDetail"),
     ]
@@ -454,6 +463,7 @@ class ErrorDetail(OneRecordBaseModel):
 
 
 class Notification(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Notification")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Notification"),
     ]
@@ -500,6 +510,7 @@ class Notification(OneRecordBaseModel):
 
 
 class Operation(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Operation")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Operation"),
     ]
@@ -526,6 +537,9 @@ class Operation(OneRecordBaseModel):
 
 
 class OperationObject(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#OperationObject"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#OperationObject"),
     ]
@@ -544,6 +558,9 @@ class OperationObject(OneRecordBaseModel):
 
 
 class ServerInformation(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#ServerInformation"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#ServerInformation"),
     ]
@@ -599,6 +616,7 @@ class ServerInformation(OneRecordBaseModel):
 
 
 class Subscription(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Subscription")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Subscription"),
     ]
@@ -660,6 +678,7 @@ class Subscription(OneRecordBaseModel):
 
 
 class Verification(OneRecordBaseModel):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#Verification")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#Verification"),
     ]
@@ -684,6 +703,9 @@ class Verification(OneRecordBaseModel):
 
 
 class AccessDelegationRequest(ActionRequest):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#AccessDelegationRequest"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#AccessDelegationRequest"),
         URIRef("https://onerecord.iata.org/ns/api#ActionRequest"),
@@ -696,6 +718,7 @@ class AccessDelegationRequest(ActionRequest):
 
 
 class ChangeRequest(ActionRequest):
+    _type: ClassVar[URIRef] = URIRef("https://onerecord.iata.org/ns/api#ChangeRequest")
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#ChangeRequest"),
         URIRef("https://onerecord.iata.org/ns/api#ActionRequest"),
@@ -709,6 +732,9 @@ class ChangeRequest(ActionRequest):
 
 
 class SubscriptionRequest(ActionRequest):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#SubscriptionRequest"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#SubscriptionRequest"),
         URIRef("https://onerecord.iata.org/ns/api#ActionRequest"),
@@ -722,6 +748,9 @@ class SubscriptionRequest(ActionRequest):
 
 
 class VerificationRequest(ActionRequest):
+    _type: ClassVar[URIRef] = URIRef(
+        "https://onerecord.iata.org/ns/api#VerificationRequest"
+    )
     _types: ClassVar[List[URIRef]] = [
         URIRef("https://onerecord.iata.org/ns/api#VerificationRequest"),
         URIRef("https://onerecord.iata.org/ns/api#ActionRequest"),
@@ -732,3 +761,10 @@ class VerificationRequest(ActionRequest):
     hasVerification: Verification = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasVerification",
     )
+
+
+for _cls in list(locals().values()):
+    if isinstance(_cls, type) and issubclass(_cls, OneRecordBaseModel):
+        result = _cls.model_rebuild()
+        if result is False:
+            raise RuntimeError(f"Failed to rebuild model for class {_cls.__name__}")
