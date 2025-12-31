@@ -1,9 +1,9 @@
 from __future__ import annotations
-import json
 
+import json
 from typing import Annotated, ClassVar, List, Optional, cast
 
-from pydantic import AnyUrl, BaseModel, Field, PrivateAttr
+from pydantic import AnyUrl, BaseModel, Field
 from rdflib import RDF, BNode, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
@@ -185,9 +185,9 @@ subject = next(
 server_info_from_graph = ServerInformation.from_graph(g, subject)
 
 
-assert (
-    server_info == server_info_from_graph
-), "Deserialized object does not match the original"
+assert server_info == server_info_from_graph, (
+    "Deserialized object does not match the original"
+)
 
 
 data = """\

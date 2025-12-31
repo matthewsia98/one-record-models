@@ -1,10 +1,12 @@
+import logging
 import subprocess
-from collections import defaultdict
+from collections import defaultdict, deque
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import cast
 
 from pydantic import AnyUrl
-from rdflib import OWL, RDF, RDFS, XSD, BNode, Graph, URIRef
+from rdflib import OWL, RDF, RDFS, XSD, BNode, Graph, Literal, URIRef
 from rdflib.namespace import split_uri
 
 XSD_TO_PYTHON = {
@@ -20,33 +22,80 @@ XSD_TO_PYTHON = {
     XSD.duration: timedelta,
 }
 
-PREFIX_TO_URL = {
+MODULE_TO_ONTOLOGY = {
     "api": "https://onerecord.iata.org/ns/api/ontology.ttl",
     "cargo": "https://onerecord.iata.org/ns/cargo/ontology.ttl",
     "code_lists": "https://onerecord.iata.org/ns/code-lists/ontology.ttl",
 }
 
+OUT_DIR = Path("src/one_record_ontology/models")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-Path("src/one_record_ontology/models/").mkdir(parents=True, exist_ok=True)
+
+# Path("src/one_record_ontology/models/base_model.py").write_text(
+#     """\
+# from pydantic import BaseModel
+# from rdflib import Graph
 
 
-for prefix, url in PREFIX_TO_URL.items():
-    lines = [
-        "from __future__ import annotations",
-        "from pydantic import AnyUrl, BaseModel, Field",
-        "from typing import Any, List, Optional",
-        "from rdflib import URIRef",
-        "from datetime import datetime, timedelta",
-        "from enum import Enum",
-        "from rdflib import URIRef",
-    ]
+# class OneRecordBaseModel(BaseModel):
+#     model_config = {
+#         "populate_by_name": True,
+#     }
+# """
+# )
 
+
+def uri_to_module_name(uri: URIRef) -> str:
+    if uri.startswith("https://onerecord.iata.org/ns/api"):
+        return "api"
+    elif uri.startswith("https://onerecord.iata.org/ns/cargo"):
+        return "cargo"
+    elif uri.startswith("https://onerecord.iata.org/ns/code-lists"):
+        return "code_lists"
+    else:
+        raise ValueError(f"Unknown namespace for URI: {uri}")
+
+
+def topo_sort(classes: set[URIRef], parents: dict[URIRef, set[URIRef]]) -> list[URIRef]:
+    """
+    Topological sort classes so that base classes come before subclasses.
+    """
+    children = defaultdict(set)
+    indegree = {cls: 0 for cls in classes}
+
+    for child, ps in parents.items():
+        for p in ps:
+            if p in classes:
+                children[p].add(child)
+                indegree[child] += 1
+
+    queue = deque(sorted(c for c in classes if indegree[c] == 0))
+    result: list[URIRef] = []
+
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        for ch in sorted(children[node]):
+            indegree[ch] -= 1
+            if indegree[ch] == 0:
+                queue.append(ch)
+
+    if len(result) != len(classes):
+        raise RuntimeError("Cycle detected in class hierarchy")
+
+    return result
+
+
+for module_name, url in MODULE_TO_ONTOLOGY.items():
     g = Graph()
     g.parse(url)
 
-    properties = defaultdict(dict)
+    # Collect properties
+    properties: dict[URIRef, dict] = defaultdict(dict)
 
     for dp, _, _ in g.triples((None, RDF.type, OWL.DatatypeProperty)):
+        dp = cast(URIRef, dp)
         properties[dp][RDF.type] = g.value(dp, RDF.type)
 
         dp_domain = g.value(dp, RDFS.domain)
@@ -56,11 +105,22 @@ for prefix, url in PREFIX_TO_URL.items():
             for _, _, union in g.triples((dp_domain, OWL.unionOf, None)):
                 properties[dp][RDFS.domain] = list(g.items(union))
 
-        properties[dp][RDFS.range] = g.value(dp, RDFS.range)
+        range = g.value(dp, RDFS.range)
+        if isinstance(range, URIRef):
+            properties[dp][RDFS.range] = g.value(dp, RDFS.range)
+        elif isinstance(range, BNode):
+            properties[dp][RDFS.range] = g.value(range, OWL.onDatatype)
+            with_restrictions = g.value(range, OWL.withRestrictions)
+            if with_restrictions is not None:
+                for restriction in g.items(with_restrictions):
+                    properties[dp][XSD.pattern] = g.value(restriction, XSD.pattern)
+                    properties[dp][XSD.minLength] = g.value(restriction, XSD.minLength)
+                    properties[dp][XSD.maxLength] = g.value(restriction, XSD.maxLength)
         properties[dp][RDFS.comment] = g.value(dp, RDFS.comment)
         properties[dp][RDFS.label] = g.value(dp, RDFS.label)
 
     for op, _, _ in g.triples((None, RDF.type, OWL.ObjectProperty)):
+        op = cast(URIRef, op)
         properties[op][RDF.type] = g.value(op, RDF.type)
 
         op_domain = g.value(op, RDFS.domain)
@@ -74,251 +134,260 @@ for prefix, url in PREFIX_TO_URL.items():
         properties[op][RDFS.comment] = g.value(op, RDFS.comment)
         properties[op][RDFS.label] = g.value(op, RDFS.label)
 
+    enums: dict[URIRef, set[URIRef]] = defaultdict(set)
+    for individual, _, _ in g.triples((None, RDF.type, OWL.NamedIndividual)):
+        if not isinstance(individual, URIRef):
+            continue
+        types = set(g.objects(individual, RDF.type))
+        types.discard(OWL.NamedIndividual)
+
+        for t in types:
+            enums[cast(URIRef, t)].add(individual)
+
+    classes: set[URIRef] = set()
+    parents: dict[URIRef, set[URIRef]] = defaultdict(set)
     for cls in g.subjects(RDF.type, OWL.Class):
         if isinstance(cls, BNode):
             continue
 
-        # if cls != URIRef("https://onerecord.iata.org/ns/cargo#Waybill"):
-        #     continue
-
-        ns, cls_name = split_uri(cls)
-        ns_prefix = ns.rpartition("/")[-1].rstrip("#")
-
-        if "code-lists" in str(cls):
-            ns_prefix = "code_lists"
-
-        if ns_prefix != prefix:
+        cls = cast(URIRef, cls)
+        if uri_to_module_name(cls) != module_name:
             continue
 
-        # if "code-lists" in str(cls):
-        #     ns_prefix = "code_lists"
+        classes.add(cls)
 
-        # Path(f"src/one_record_ontology/models/{ns_prefix}").mkdir(
-        #     parents=True, exist_ok=True
-        # )
-        # Path(f"src/one_record_ontology/models/{ns_prefix}/__init__.py").touch()
-
-        cls_properties = defaultdict(dict)
-
-        is_enum = False
-        for _, _, equivalent_class in g.triples((cls, OWL.equivalentClass, None)):
-            one_of = g.value(equivalent_class, OWL.oneOf)
+        for _, _, eq in g.triples((cls, OWL.equivalentClass, None)):
+            one_of = g.value(eq, OWL.oneOf)
             if one_of is not None:
-                is_enum = True
-                enum_values = list(g.items(one_of))
+                enums[cls].update(cast(set[URIRef], set(g.items(one_of))))
 
-                cls_lines = []
-                cls_lines.append(f"class {cls_name}(str, Enum):")
+        for _, _, sc in g.triples((cls, RDFS.subClassOf, None)):
+            if isinstance(sc, URIRef):
+                parents[cls].add(sc)
 
-                label = g.value(cls, RDFS.label)
-                comment = g.value(cls, RDFS.comment)
-                if label is not None or comment is not None:
-                    cls_lines.append('    """')
-                    if label is not None:
-                        cls_lines.append(f"    label: {label}")
-                    if comment is not None:
-                        cls_lines.append(f"    comment: {comment}")
-                    cls_lines.append('    """')
+    header_lines = [
+        "from __future__ import annotations",
+        "",
+        "from pydantic import AnyUrl, BaseModel, Field",
+        "from pydantic.json_schema import SkipJsonSchema",
+        "from typing import Any, List, Optional, Union, ClassVar",
+        "from rdflib import URIRef",
+        "from datetime import datetime, timedelta",
+        "from enum import Enum",
+        "from one_record_ontology.models.base_model import OneRecordBaseModel",
+    ]
+    import_lines: set[str] = set()
+    enum_lines: list[str] = []
+    class_lines: list[str] = []
+    ordered_classes = topo_sort(classes, parents)
+    for cls in ordered_classes:
+        cls_name = split_uri(cls)[1]
 
-                for ev in enum_values:
-                    _, ev_name = split_uri(ev)
-                    if not ev_name.isidentifier():
-                        ev_name = f"_{ev_name}"
+        if cls in enums or cls in {
+            URIRef("https://onerecord.iata.org/ns/code-lists/CurrencyCode")
+        }:
+            enum_lines.append("")
+            enum_lines.append(f"class {cls_name}(str, Enum):")
 
-                    label = g.value(ev, RDFS.label)
-                    if label is not None:
-                        cls_lines.append(f"    # label: {label}")
-
-                    comment = g.value(ev, RDFS.comment)
-                    if comment is not None:
-                        comment = " ".join(
-                            [line.strip() for line in str(comment).splitlines()]
-                        )
-                        cls_lines.append(f"    # comment: {comment}")
-
-                    cls_lines.append(f'    {ev_name} = URIRef("{(ev)}")')
-                # Path(
-                #     f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py"
-                # ).write_text("\n".join(lines), encoding="utf-8")
-                lines.extend(cls_lines)
-
-        if is_enum:
-            continue
-
-        base_class_uris = []
-        base_classes = []
-        for _, _, super_class in g.triples((cls, RDFS.subClassOf, None)):
-            if isinstance(super_class, URIRef):
-                _, super_class_name = split_uri(super_class)
-                base_class_uris.append(super_class)
-                base_classes.append(super_class_name)
-
-            if g.value(super_class, RDF.type) != OWL.Restriction:
+            if not enums[cls]:
+                logging.warning(f"Enum class {cls_name} has no members")
+                enum_lines.append("    pass")
                 continue
 
-            on_prop = g.value(super_class, OWL.onProperty)
-            cls_properties[on_prop] = {**properties[on_prop]}
+            for enum_value in enums[cls]:
+                enum_name = split_uri(enum_value)[1]
+                if not enum_name.isidentifier():
+                    enum_name = f"_{enum_name}"
+                if (label := g.value(enum_value, RDFS.label)) is not None:
+                    label_str = str(cast(Literal, label).toPython()).strip()
+                    enum_lines.append(f"    # label: {label_str}")
+                if (comment := g.value(enum_value, RDFS.comment)) is not None:
+                    comment_lines = str(cast(Literal, comment).toPython()).splitlines()
+                    comment_str = " ".join(line.strip() for line in comment_lines)
+                    enum_lines.append(f"    # comment: {comment_str}")
+                enum_lines.append(f'    {enum_name} = URIRef("{enum_value}")\n')
+            continue
 
-            # Value type constraints
-            cls_properties[on_prop][OWL.allValuesFrom] = cls_properties[on_prop].get(
-                OWL.allValuesFrom
-            ) or g.value(super_class, OWL.allValuesFrom)
-            cls_properties[on_prop][OWL.onDataRange] = cls_properties[on_prop].get(
-                OWL.onDataRange
-            ) or g.value(super_class, OWL.onDataRange)
-            cls_properties[on_prop][OWL.onClass] = cls_properties[on_prop].get(
+        base_names: list[str] = []
+        for p in parents.get(cls, []):
+            if p in classes:
+                base_class_name = split_uri(p)[1]
+                base_names.append(base_class_name)
+
+        bases = ", ".join(base_names) if base_names else "OneRecordBaseModel"
+        class_lines.append("")
+        class_lines.append(f"class {cls_name}({bases}):")
+
+        cls_properties: dict[URIRef, dict] = {}
+        for _, _, sc in g.triples((cls, RDFS.subClassOf, None)):
+            if g.value(sc, RDF.type) != OWL.Restriction:
+                continue
+
+            on_property = cast(URIRef, g.value(sc, OWL.onProperty))
+
+            if on_property not in cls_properties:
+                cls_properties[on_property] = {**properties[on_property]}
+
+            # Type constraints
+            cls_properties[on_property][OWL.allValuesFrom] = cls_properties[
+                on_property
+            ].get(OWL.allValuesFrom) or g.value(sc, OWL.allValuesFrom)
+            cls_properties[on_property][OWL.onDataRange] = cls_properties[
+                on_property
+            ].get(OWL.onDataRange) or g.value(sc, OWL.onDataRange)
+            cls_properties[on_property][OWL.onDatatype] = cls_properties[
+                on_property
+            ].get(OWL.onDatatype) or g.value(sc, OWL.onDatatype)
+            cls_properties[on_property][OWL.onClass] = cls_properties[on_property].get(
                 OWL.onClass
-            ) or g.value(super_class, OWL.onClass)
+            ) or g.value(sc, OWL.onClass)
 
             # Cardinality constraints
-            cls_properties[on_prop][OWL.cardinality] = cls_properties[on_prop].get(
-                OWL.cardinality
-            ) or g.value(super_class, OWL.cardinality)
-            cls_properties[on_prop][OWL.qualifiedCardinality] = cls_properties[
-                on_prop
-            ].get(OWL.qualifiedCardinality) or g.value(
-                super_class, OWL.qualifiedCardinality
-            )
-            cls_properties[on_prop][OWL.minCardinality] = cls_properties[on_prop].get(
-                OWL.minCardinality
-            ) or g.value(super_class, OWL.minCardinality)
-            cls_properties[on_prop][OWL.minQualifiedCardinality] = cls_properties[
-                on_prop
+            cls_properties[on_property][OWL.cardinality] = cls_properties[
+                on_property
+            ].get(OWL.cardinality) or g.value(sc, OWL.cardinality)
+            cls_properties[on_property][OWL.qualifiedCardinality] = cls_properties[
+                on_property
+            ].get(OWL.qualifiedCardinality) or g.value(sc, OWL.qualifiedCardinality)
+            cls_properties[on_property][OWL.minCardinality] = cls_properties[
+                on_property
+            ].get(OWL.minCardinality) or g.value(sc, OWL.minCardinality)
+            cls_properties[on_property][OWL.minQualifiedCardinality] = cls_properties[
+                on_property
             ].get(OWL.minQualifiedCardinality) or g.value(
-                super_class, OWL.minQualifiedCardinality
+                sc, OWL.minQualifiedCardinality
             )
-            cls_properties[on_prop][OWL.maxCardinality] = cls_properties[on_prop].get(
-                OWL.maxCardinality
-            ) or g.value(super_class, OWL.maxCardinality)
-            cls_properties[on_prop][OWL.maxQualifiedCardinality] = cls_properties[
-                on_prop
+            cls_properties[on_property][OWL.maxCardinality] = cls_properties[
+                on_property
+            ].get(OWL.maxCardinality) or g.value(sc, OWL.maxCardinality)
+            cls_properties[on_property][OWL.maxQualifiedCardinality] = cls_properties[
+                on_property
             ].get(OWL.maxQualifiedCardinality) or g.value(
-                super_class, OWL.maxQualifiedCardinality
+                sc, OWL.maxQualifiedCardinality
             )
-
-        cls_lines = []
-
-        if base_classes:
-            for base_class_uri in base_class_uris:
-                ns, base_class_name = split_uri(base_class_uri)
-                ns_prefix = ns.rpartition("/")[-1].rstrip("#")
-                # cls_lines.append(
-                #     f"from one_record_ontology.models.{ns_prefix}.{base_class_name} import {base_class_name}"
-                # )
-            cls_lines.append(f"class {cls_name}({', '.join(base_classes)}):")
-        else:
-            cls_lines.append(f"class {cls_name}(BaseModel):")
 
         if not cls_properties:
-            cls_lines.append("    ...")
+            class_lines.append("    pass")
+            continue
 
-        imported = set()
-        # type_checking_lines = [
-        #     "from __future__ import annotations",
-        #     "from typing import TYPE_CHECKING",
-        #     "if TYPE_CHECKING:",
-        # ]
-        for prop, attrs in cls_properties.items():
-            _, prop_name = split_uri(prop)
+        type_uris = []
+        for t in [cls, *parents[cls]]:
+            type_uris.append(f'URIRef("{t}")')
+        class_lines.append(
+            f"    _types: ClassVar[List[URIRef]] = [{', '.join(type_uris)},]\n"
+        )
 
-            # print(prop_name)
-            # print(json.dumps(attrs, indent=4))
+        for prop, prop_attrs in cls_properties.items():
+            prop_name = split_uri(prop)[1]
+            prop_type = prop_attrs.get(RDF.type)
+            prop_range = prop_attrs.get(RDFS.range)
 
-            prop_type = attrs.get(RDF.type)
-            prop_range = attrs.get(RDFS.range)
-
-            if prop_type == OWL.DatatypeProperty:
-                if isinstance(prop_range, URIRef):
-                    python_type = XSD_TO_PYTHON[prop_range].__name__
-                elif isinstance(prop_range, BNode):
-                    on_data_type = g.value(prop_range, OWL.onDatatype)
-                    python_type = XSD_TO_PYTHON[on_data_type].__name__
-            elif prop_type == OWL.ObjectProperty:
-                if prop_range is None:
-                    python_type = "Any"
-                else:
-                    prop_ns, python_type = split_uri(prop_range)
-
-                prop_ns_prefix = prop_ns.rpartition("/")[-1].rstrip("#")
-                if "code-lists" in prop_ns:
-                    prop_ns_prefix = "code_lists"
-
-                if (
-                    prefix != prop_ns_prefix
-                    and python_type != cls_name
-                    and python_type not in imported
-                ):
-                    # type_checking_lines.append(
-                    #     f"    from one_record_ontology.models.{prop_ns_prefix}.{python_type} import {python_type}",
-                    # )
-                    lines.insert(
-                        0,
-                        f"from one_record_ontology.models.{prop_ns_prefix} import {python_type}",
-                    )
-                    imported.add(python_type)
+            python_type: str
+            predicates_for_type = [
+                RDFS.range,
+                OWL.onDatatype,
+                OWL.allValuesFrom,
+                OWL.onDataRange,
+            ]
+            for pred in predicates_for_type:
+                if (value := prop_attrs.get(pred)) is not None:
+                    if isinstance(value, URIRef):
+                        if prop_type == OWL.DatatypeProperty:
+                            python_type = XSD_TO_PYTHON[value].__name__
+                            break
+                        elif prop_type == OWL.ObjectProperty:
+                            python_type = split_uri(value)[1]
+                            if uri_to_module_name(value) != module_name:
+                                import_lines.add(
+                                    f"from one_record_ontology.models.{uri_to_module_name(value)} import {python_type}"
+                                )
+                            break
+            else:
+                logging.warning(
+                    f"Unknown type for property {prop_name} in class {cls_name}; defaulting to Any"
+                )
+                python_type = "Any"
 
             is_optional = True
             is_list = True
             if (
-                (c := attrs.get(OWL.cardinality)) is not None and c.toPython() == 1
+                (c := prop_attrs.get(OWL.cardinality)) is not None and c.toPython() == 1
             ) or (
-                (c := attrs.get(OWL.qualifiedCardinality)) is not None
+                (c := prop_attrs.get(OWL.qualifiedCardinality)) is not None
                 and c.toPython() == 1
             ):
                 is_optional = False
                 is_list = False
             elif (
-                (min_c := attrs.get(OWL.minCardinality)) is not None
+                (min_c := prop_attrs.get(OWL.minCardinality)) is not None
                 and min_c.toPython() == 1
             ) or (
-                (min_c := attrs.get(OWL.minQualifiedCardinality)) is not None
+                (min_c := prop_attrs.get(OWL.minQualifiedCardinality)) is not None
                 and min_c.toPython() == 1
             ):
                 is_optional = False
             if (
-                (max_c := attrs.get(OWL.maxCardinality)) is not None
+                (max_c := prop_attrs.get(OWL.maxCardinality)) is not None
                 and max_c.toPython() == 1
             ) or (
-                (max_c := attrs.get(OWL.maxQualifiedCardinality)) is not None
+                (max_c := prop_attrs.get(OWL.maxQualifiedCardinality)) is not None
                 and max_c.toPython() == 1
             ):
                 is_list = False
 
-            # python_type = f'"{python_type}"'
+            field_info: dict[str, str] = {}
+            if (min_length := prop_attrs.get(XSD.minLength)) is not None:
+                field_info["min_length"] = min_length.toPython()
+            if (max_length := prop_attrs.get(XSD.maxLength)) is not None:
+                field_info["max_length"] = max_length.toPython()
+            if (pattern := prop_attrs.get(XSD.pattern)) is not None:
+                field_info["pattern"] = pattern.toPython()
 
             match (is_optional, is_list):
                 case (False, False):
-                    python_type = f'{python_type} = Field(serialization_alias="{prop}")'
+                    field_info["annotated_type"] = python_type
                 case (False, True):
-                    python_type = (
-                        f'List[{python_type}] = Field(serialization_alias="{prop}")'
-                    )
+                    field_info["annotated_type"] = f"List[{python_type}]"
                 case (True, False):
-                    python_type = f'Optional[{python_type}] = Field(default=None, serialization_alias="{prop}")'
+                    field_info["annotated_type"] = (
+                        f"Union[{python_type}, SkipJsonSchema[None]]"
+                    )
+                    field_info["default"] = "None"
                 case (True, True):
-                    python_type = f'List[{python_type}] = Field(default_factory=list, serialization_alias="{prop}")'
+                    field_info["annotated_type"] = f"List[{python_type}]"
+                    field_info["default_factory"] = "list"
 
-            if (label := attrs.get(RDFS.label)) is not None:
-                cls_lines.append(f"    # label: {label}")
-            if (comment := attrs.get(RDFS.comment)) is not None:
-                cls_lines.append(f"    # comment: {comment}")
-            cls_lines.append(f"    # iri: {prop}")
+            annotated_type = field_info["annotated_type"]
+            property_definition = f"    {prop_name}: {annotated_type}"
+            field_params = []
+            field_params.append(f'serialization_alias="{prop}"')
+            if "default" in field_info:
+                field_params.append(f"default={field_info['default']}")
+            if "default_factory" in field_info:
+                field_params.append(f"default_factory={field_info['default_factory']}")
+            if "min_length" in field_info:
+                field_params.append(f"min_length={field_info['min_length']}")
+            if "max_length" in field_info:
+                field_params.append(f"max_length={field_info['max_length']}")
+            if "pattern" in field_info:
+                field_params.append(f'pattern=r"{field_info["pattern"]}"')
+            field_definition = f"Field({',\n'.join(field_params)},)"
+            property_definition += f" = {field_definition}\n"
 
-            cls_lines.append(f"    {prop_name}: {python_type}")
+            if (label := prop_attrs.get(RDFS.label)) is not None:
+                label_str = str(label.toPython()).strip()
+                class_lines.append(f"    # label: {label_str}")
+            if (comment := prop_attrs.get(RDFS.comment)) is not None:
+                comment_lines = str(comment.toPython()).splitlines()
+                comment_str = " ".join(line.strip() for line in comment_lines)
+                class_lines.append(f"    # comment: {comment_str}")
+            class_lines.append(property_definition)
 
-        # if len(imported) > 0:
-        #     lines.insert(0, "\n".join(type_checking_lines))
-
-        # Path(f"src/one_record_ontology/models/{ns_prefix}/{cls_name}.py").write_text(
-        #     "\n".join(lines),
-        #     encoding="utf-8",
-        # )
-        lines.extend(cls_lines)
-
-    Path(f"src/one_record_ontology/models/{prefix}.py").write_text(
-        "\n".join(lines),
-        encoding="utf-8",
+    file_lines = header_lines + list(import_lines) + enum_lines + class_lines
+    OUT_DIR.joinpath(f"{module_name}.py").write_text(
+        "\n".join(file_lines), encoding="utf-8"
     )
+
 
 subprocess.run(
     [
