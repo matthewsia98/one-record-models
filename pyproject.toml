@@ -28,4 +28,4 @@ extend-select = [
 
 [tool.ruff.lint.per-file-ignores]
 # Ignore `E741` (ambiguous variable name) in all files under `app/namespaces/code_lists/`.
-"src/one_record_ontology/models/code_lists.py" = ["E741"]
+"src/one_record_ontology/models/generated/code_lists.py" = ["E741"]

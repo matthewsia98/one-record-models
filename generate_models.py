@@ -28,22 +28,9 @@ MODULE_TO_ONTOLOGY = {
     "code_lists": "https://onerecord.iata.org/ns/code-lists/ontology.ttl",
 }
 
-OUT_DIR = Path("src/one_record_ontology/models")
+OUT_DIR = Path("src/one_record_ontology/models/generated")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-
-# Path("src/one_record_ontology/models/base_model.py").write_text(
-#     """\
-# from pydantic import BaseModel
-# from rdflib import Graph
-
-
-# class OneRecordBaseModel(BaseModel):
-#     model_config = {
-#         "populate_by_name": True,
-#     }
-# """
-# )
+OUT_DIR.joinpath("__init__.py").touch()
 
 
 def uri_to_module_name(uri: URIRef) -> str:
