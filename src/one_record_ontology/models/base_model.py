@@ -23,7 +23,7 @@ class OneRecordBaseModel(BaseModel):
         return AnyUrl(url=str(self.subject))
 
     @computed_field(alias="@type")
-    def _types(self) -> List[AnyUrl]:
+    def types(self) -> List[AnyUrl]:
         return [AnyUrl(url=str(t)) for t in self.__class__._types]
 
     def __init_subclass__(cls, **kwargs):

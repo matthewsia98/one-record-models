@@ -1,7 +1,7 @@
 import logging
 import subprocess
 from collections import defaultdict, deque
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import cast
 
@@ -77,6 +77,25 @@ def topo_sort(classes: set[URIRef], parents: dict[URIRef, set[URIRef]]) -> list[
 for module_name, url in MODULE_TO_ONTOLOGY.items():
     g = Graph()
     g.parse(url)
+
+    docstring_lines = [
+        '"""',
+        "This file was automatically generated from the ONE Record API ontology.",
+        "",
+        f"Ontology source: {url}",
+    ]
+    ontology = next(g.subjects(RDF.type, OWL.Ontology))
+    if (version_iri := g.value(ontology, OWL.versionIRI)) is not None:
+        docstring_lines.append(f"Ontology version: {version_iri}")
+    docstring_lines.append(f"Generated on: {datetime.now(timezone.utc).isoformat()}")
+
+    docstring_lines.extend(
+        [
+            "",
+            "DO NOT EDIT MANUALLY.",
+            '"""',
+        ]
+    )
 
     # Collect properties
     properties: dict[URIRef, dict] = defaultdict(dict)
@@ -286,7 +305,7 @@ for module_name, url in MODULE_TO_ONTOLOGY.items():
                             python_type = split_uri(value)[1]
                             if uri_to_module_name(value) != module_name:
                                 import_lines.add(
-                                    f"from one_record_ontology.models.{uri_to_module_name(value)} import {python_type}"
+                                    f"from one_record_ontology.models.generated.{uri_to_module_name(value)} import {python_type}"
                                 )
                             break
             else:
@@ -370,7 +389,9 @@ for module_name, url in MODULE_TO_ONTOLOGY.items():
                 class_lines.append(f"    # comment: {comment_str}")
             class_lines.append(property_definition)
 
-    file_lines = header_lines + list(import_lines) + enum_lines + class_lines
+    file_lines = (
+        docstring_lines + header_lines + list(import_lines) + enum_lines + class_lines
+    )
     OUT_DIR.joinpath(f"{module_name}.py").write_text(
         "\n".join(file_lines), encoding="utf-8"
     )

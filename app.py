@@ -2,8 +2,8 @@ from fastapi import FastAPI, Request, Response
 from pydantic import AnyUrl
 from rdflib import URIRef
 
-from one_record_ontology.models.api import ServerInformation
-from one_record_ontology.models.cargo import Organization, OtherIdentifier
+from one_record_ontology.models.generated.api import ServerInformation
+from one_record_ontology.models.generated.cargo import Organization, OtherIdentifier
 
 app = FastAPI()
 
