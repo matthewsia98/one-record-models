@@ -57,7 +57,11 @@ async def read_root(request: Request):
     )
 
 
-@app.get("/subscriptions")
+@app.get(
+    "/subscriptions",
+    # response_class=Response,
+    response_model=Subscription,
+)
 def get_subscription(request: Request, topicType: TopicType, topic: AnyUrl):
     base_url = str(request.base_url).rstrip("/")
     data_holder = "/".join([base_url, "logistics-objects", "_data-holder"])

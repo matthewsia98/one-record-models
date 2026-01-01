@@ -1,7 +1,9 @@
 from enum import Enum
 from typing import Any, ClassVar, List, Optional, Self, Union, get_args, get_origin
 
-from pydantic import AnyUrl, BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, GetJsonSchemaHandler
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import core_schema as cs
 from rdflib import RDF, BNode, Graph, Literal, URIRef
 
 from one_record_ontology.utils.graph_utils import SubjectType, get_root_subject
@@ -17,16 +19,40 @@ class OneRecordBaseModel(BaseModel):
         "json_schema_mode_override": "serialization",
     }
 
-    @computed_field(alias="@id")
-    def id(self) -> AnyUrl:
-        if isinstance(self.subject, BNode):
-            return AnyUrl(url=str(self.subject.skolemize()))
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls, core_schema: cs.CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
+        json_schema = handler(core_schema)
+        json_schema = handler.resolve_ref_schema(json_schema)
 
-        return AnyUrl(url=str(self.subject))
+        json_schema["properties"]["@id"] = {
+            "type": "string",
+            "format": "uri",
+            # "description": "JSON-LD @id value",
+        }
+        json_schema["properties"]["@type"] = {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri",
+                # "enum": [str(t) for t in cls._types],
+            },
+            # "description": "JSON-LD rdf:type values",
+        }
 
-    @computed_field(alias="@type")
-    def types(self) -> List[AnyUrl]:
-        return [AnyUrl(url=str(t)) for t in self.__class__._types]
+        return json_schema
+
+    # @computed_field(alias="@id")
+    # def id(self) -> AnyUrl:
+    #     if isinstance(self.subject, BNode):
+    #         return AnyUrl(url=str(self.subject.skolemize()))
+
+    #     return AnyUrl(url=str(self.subject))
+
+    # @computed_field(alias="@type")
+    # def types(self) -> List[AnyUrl]:
+    #     return [AnyUrl(url=str(t)) for t in self.__class__._types]
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
