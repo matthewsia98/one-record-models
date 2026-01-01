@@ -1,18 +1,7 @@
 from enum import Enum
-from typing import (
-    Annotated,
-    Any,
-    ClassVar,
-    List,
-    Optional,
-    Self,
-    Union,
-    get_args,
-    get_origin,
-)
+from typing import Any, ClassVar, List, Optional, Self, Union, get_args, get_origin
 
-from pydantic import BaseModel, Field, GetJsonSchemaHandler, WithJsonSchema
-from pydantic.fields import ComputedFieldInfo, FieldInfo
+from pydantic import BaseModel, Field, GetJsonSchemaHandler
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema as cs
 from rdflib import RDF, BNode, Graph, Literal, URIRef
@@ -20,21 +9,16 @@ from rdflib import RDF, BNode, Graph, Literal, URIRef
 from one_record_ontology.utils.graph_utils import SubjectType, get_root_subject
 
 
-def field_title_generator(
-    field_name: str, field_info: FieldInfo | ComputedFieldInfo
-) -> str:
-    if isinstance(field_info, FieldInfo) and field_info.serialization_alias:
-        return field_info.serialization_alias
-
-    return field_name
+def field_title_generator(field_name: str, field_info: Field) -> str:
+    if field_info.serialization_alias is None:
+        print(f"Field {field_name} has no serialization_alias")
+    return field_info.serialization_alias
 
 
 class OneRecordBaseModel(BaseModel):
     _type: ClassVar[URIRef]
     _types: ClassVar[List[URIRef]]
-    subject: Annotated[
-        SubjectType, WithJsonSchema({"type": "string", "format": "uri"})
-    ] = Field(default_factory=BNode, serialization_alias="@id")
+    subject: SubjectType = Field(default_factory=BNode, exclude=True)
 
     model_config = {
         "arbitrary_types_allowed": True,
@@ -49,11 +33,11 @@ class OneRecordBaseModel(BaseModel):
         json_schema = handler(core_schema)
         json_schema = handler.resolve_ref_schema(json_schema)
 
-        # json_schema["properties"]["@id"] = {
-        #     "type": "string",
-        #     "format": "uri",
-        #     # "description": "JSON-LD @id value",
-        # }
+        json_schema["properties"]["@id"] = {
+            "type": "string",
+            "format": "uri",
+            # "description": "JSON-LD @id value",
+        }
         json_schema["properties"]["@type"] = {
             "type": "array",
             "items": {
