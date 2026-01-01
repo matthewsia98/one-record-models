@@ -3,7 +3,7 @@ This file was automatically generated from the ONE Record API ontology.
 
 Ontology source: https://onerecord.iata.org/ns/api/ontology.ttl
 Ontology version: https://onerecord.iata.org/ns/api/2.2.0
-Generated on: 2025-12-31T20:58:49.116514+00:00
+Generated on: 2026-01-01T00:21:35.928985+00:00
 
 DO NOT EDIT MANUALLY.
 """
@@ -27,84 +27,6 @@ from one_record_ontology.models.generated.cargo import (
 
 
 class NotificationEventType(str, Enum):
-    # label: LOGISTICS_OBJECT_CREATED
-    LOGISTICS_OBJECT_CREATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
-    )
-
-    # label: CHANGE_REQUEST_ACCEPTED
-    # comment: :EventType for accepted :ChangeRequests
-    CHANGE_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_ACCEPTED"
-    )
-
-    # label: VERIFICATION_REQUEST_ACKNOWLEDGED
-    VERIFICATION_REQUEST_ACKNOWLEDGED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_ACKNOWLEDGED"
-    )
-
-    # label: LOGISTICS_OBJECT_ACCESS_GRANTED
-    LOGISTICS_OBJECT_ACCESS_GRANTED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_ACCESS_GRANTED"
-    )
-
-    # label: LOGISTICS_OBJECT_AVAILABLE
-    LOGISTICS_OBJECT_AVAILABLE = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_AVAILABLE"
-    )
-
-    # label: CHANGE_REQUEST_REVOKED
-    CHANGE_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REVOKED"
-    )
-
-    # label: ACCESS_DELEGATION_REQUEST_PENDING
-    ACCESS_DELEGATION_REQUEST_PENDING = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_PENDING"
-    )
-
-    # label: VERIFICATION_REQUEST_PENDING
-    VERIFICATION_REQUEST_PENDING = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_PENDING"
-    )
-
-    # label: LOGISTICS_EVENT_RECEIVED
-    LOGISTICS_EVENT_RECEIVED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_EVENT_RECEIVED"
-    )
-
-    # label: ACCESS_DELEGATION_REQUEST_REJECTED
-    ACCESS_DELEGATION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REJECTED"
-    )
-
-    # label: CHANGE_REQUEST_FAILED
-    # comment: :EventType for failed :ChangeRequests.
-    CHANGE_REQUEST_FAILED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_FAILED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_ACCEPTED
-    SUBSCRIPTION_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_ACCEPTED"
-    )
-
-    # label: CHANGE_REQUEST_PENDING
-    # comment: :EventType for pending :ChangeRequests.
-    CHANGE_REQUEST_PENDING = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_PENDING"
-    )
-
-    # label: CHANGE_REQUEST_PENDING
-    CHANGE_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REJECTED"
-    )
-
-    # label: VERIFICATION_REQUEST_FAILED
-    VERIFICATION_REQUEST_FAILED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_FAILED"
-    )
-
     # label: SUBSCRIPTION_REQUEST_PENDING
     SUBSCRIPTION_REQUEST_PENDING = URIRef(
         "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_PENDING"
@@ -115,6 +37,114 @@ class NotificationEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
     )
 
+    # label: SUBSCRIPTION_REQUEST_FAILED
+    SUBSCRIPTION_REQUEST_FAILED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_FAILED"
+    )
+
+    # label: CHANGE_REQUEST_PENDING
+    CHANGE_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REJECTED"
+    )
+
+    # label: CHANGE_REQUEST_REVOKED
+    CHANGE_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_REVOKED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_REVOKED
+    SUBSCRIPTION_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REVOKED"
+    )
+
+    # label: CHANGE_REQUEST_ACCEPTED
+    # comment: :EventType for accepted :ChangeRequests
+    CHANGE_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_ACCEPTED"
+    )
+
+    # label: CHANGE_REQUEST_FAILED
+    # comment: :EventType for failed :ChangeRequests.
+    CHANGE_REQUEST_FAILED = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_FAILED"
+    )
+
+    # label: LOGISTICS_EVENT_RECEIVED
+    LOGISTICS_EVENT_RECEIVED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_EVENT_RECEIVED"
+    )
+
+    # label: CHANGE_REQUEST_PENDING
+    # comment: :EventType for pending :ChangeRequests.
+    CHANGE_REQUEST_PENDING = URIRef(
+        "https://onerecord.iata.org/ns/api#CHANGE_REQUEST_PENDING"
+    )
+
+    # label: ACCESS_DELEGATION_REQUEST_PENDING
+    ACCESS_DELEGATION_REQUEST_PENDING = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_PENDING"
+    )
+
+    # label: VERIFICATION_REQUEST_REVOKED
+    VERIFICATION_REQUEST_REVOKED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REVOKED"
+    )
+
+    # label: VERIFICATION_REQUEST_FAILED
+    VERIFICATION_REQUEST_FAILED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_FAILED"
+    )
+
+    # label: LOGISTICS_OBJECT_CREATED
+    LOGISTICS_OBJECT_CREATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
+    )
+
+    # label: VERIFICATION_REQUEST_REJECTED
+    VERIFICATION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REJECTED"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_ACCEPTED
+    SUBSCRIPTION_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_ACCEPTED"
+    )
+
+    # label: LOGISTICS_OBJECT_ACCESS_GRANTED
+    LOGISTICS_OBJECT_ACCESS_GRANTED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_ACCESS_GRANTED"
+    )
+
+    # label: VERIFICATION_REQUEST_PENDING
+    VERIFICATION_REQUEST_PENDING = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_PENDING"
+    )
+
+    # label: SUBSCRIPTION_REQUEST_REJECTED
+    SUBSCRIPTION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REJECTED"
+    )
+
+    # label: ACCESS_DELEGATION_REQUEST_ACCEPTED
+    ACCESS_DELEGATION_REQUEST_ACCEPTED = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_ACCEPTED"
+    )
+
+    # label: VERIFICATION_REQUEST_ACKNOWLEDGED
+    VERIFICATION_REQUEST_ACKNOWLEDGED = URIRef(
+        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_ACKNOWLEDGED"
+    )
+
+    # label: ACCESS_DELEGATION_REQUEST_REJECTED
+    ACCESS_DELEGATION_REQUEST_REJECTED = URIRef(
+        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REJECTED"
+    )
+
+    # label: LOGISTICS_OBJECT_AVAILABLE
+    LOGISTICS_OBJECT_AVAILABLE = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_AVAILABLE"
+    )
+
     # label: ACCESS_DELEGATION_REQUEST_FAILED
     ACCESS_DELEGATION_REQUEST_FAILED = URIRef(
         "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_FAILED"
@@ -123,36 +153,6 @@ class NotificationEventType(str, Enum):
     # label: ACCESS_DELEGATION_REQUEST_REVOKED
     ACCESS_DELEGATION_REQUEST_REVOKED = URIRef(
         "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_REVOKED"
-    )
-
-    # label: VERIFICATION_REQUEST_REVOKED
-    VERIFICATION_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REVOKED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_REVOKED
-    SUBSCRIPTION_REQUEST_REVOKED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REVOKED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_FAILED
-    SUBSCRIPTION_REQUEST_FAILED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_FAILED"
-    )
-
-    # label: ACCESS_DELEGATION_REQUEST_ACCEPTED
-    ACCESS_DELEGATION_REQUEST_ACCEPTED = URIRef(
-        "https://onerecord.iata.org/ns/api#ACCESS_DELEGATION_REQUEST_ACCEPTED"
-    )
-
-    # label: VERIFICATION_REQUEST_REJECTED
-    VERIFICATION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#VERIFICATION_REQUEST_REJECTED"
-    )
-
-    # label: SUBSCRIPTION_REQUEST_REJECTED
-    SUBSCRIPTION_REQUEST_REJECTED = URIRef(
-        "https://onerecord.iata.org/ns/api#SUBSCRIPTION_REQUEST_REJECTED"
     )
 
 
@@ -166,16 +166,16 @@ class PatchOperation(str, Enum):
 
 
 class Permission(str, Enum):
-    # label: GET_LOGISTICS_OBJECT
-    # comment: :Permission to get a :LogisticsObject
-    GET_LOGISTICS_OBJECT = URIRef(
-        "https://onerecord.iata.org/ns/api#GET_LOGISTICS_OBJECT"
-    )
-
     # label: GET_LOGISTICS_EVENT
     # comment: :Permission to get a :LogisticsEvent
     GET_LOGISTICS_EVENT = URIRef(
         "https://onerecord.iata.org/ns/api#GET_LOGISTICS_EVENT"
+    )
+
+    # label: GET_LOGISTICS_OBJECT
+    # comment: :Permission to get a :LogisticsObject
+    GET_LOGISTICS_OBJECT = URIRef(
+        "https://onerecord.iata.org/ns/api#GET_LOGISTICS_OBJECT"
     )
 
     # label: POST_LOGISTICS_EVENT
@@ -194,16 +194,13 @@ class RequestStatus(str, Enum):
     # label: REQUEST_REVOKED
     REQUEST_REVOKED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REVOKED")
 
+    # label: REQUEST_ACCEPTED
+    REQUEST_ACCEPTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED")
+
     # label: REQUEST_ACKNOWLEDGED
     REQUEST_ACKNOWLEDGED = URIRef(
         "https://onerecord.iata.org/ns/api#REQUEST_ACKNOWLEDGED"
     )
-
-    # label: REQUEST_ACCEPTED
-    REQUEST_ACCEPTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED")
-
-    # label: REQUEST_REJECTED
-    REQUEST_REJECTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REJECTED")
 
     # label: REQUEST_FAILED
     REQUEST_FAILED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_FAILED")
@@ -211,11 +208,14 @@ class RequestStatus(str, Enum):
     # label: REQUEST_PENDING
     REQUEST_PENDING = URIRef("https://onerecord.iata.org/ns/api#REQUEST_PENDING")
 
+    # label: REQUEST_REJECTED
+    REQUEST_REJECTED = URIRef("https://onerecord.iata.org/ns/api#REQUEST_REJECTED")
+
 
 class SubscriptionEventType(str, Enum):
-    # label: LOGISTICS_OBJECT_CREATED
-    LOGISTICS_OBJECT_CREATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
+    # label: LOGISTICS_OBJECT_UPDATED
+    LOGISTICS_OBJECT_UPDATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
     )
 
     # label: LOGISTICS_EVENT_RECEIVED
@@ -223,9 +223,9 @@ class SubscriptionEventType(str, Enum):
         "https://onerecord.iata.org/ns/api#LOGISTICS_EVENT_RECEIVED"
     )
 
-    # label: LOGISTICS_OBJECT_UPDATED
-    LOGISTICS_OBJECT_UPDATED = URIRef(
-        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
+    # label: LOGISTICS_OBJECT_CREATED
+    LOGISTICS_OBJECT_CREATED = URIRef(
+        "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_CREATED"
     )
 
 
@@ -253,16 +253,19 @@ class AccessDelegation(OneRecordBaseModel):
     # comment: A reference to a cargo:LogisticsObject.
     hasLogisticsObject: List[LogisticsObject] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasLogisticsObject",
+        default_factory=list,
     )
 
     # label: has Permission
     hasPermission: List[Permission] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasPermission",
+        default_factory=list,
     )
 
     # label: is requested for
     isRequestedFor: List[Organization] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#isRequestedFor",
+        default_factory=list,
     )
 
     # label: Description
@@ -274,8 +277,9 @@ class AccessDelegation(OneRecordBaseModel):
 
     # label: notify RequestStatus Change
     # comment: Flag specifying if the requestor wants to receive Notification from the publisher when the status of an action request changed, default=FALSE
-    notifyRequestStatusChange: bool = Field(
+    notifyRequestStatusChange: Union[bool, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#notifyRequestStatusChange",
+        default=None,
     )
 
 
@@ -293,14 +297,16 @@ class ActionRequest(OneRecordBaseModel):
     )
 
     # label: has Request Status
-    hasRequestStatus: RequestStatus = Field(
+    hasRequestStatus: Union[RequestStatus, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasRequestStatus",
+        default=None,
     )
 
     # label: is Requested By
     # comment: Organization Identifier that represents the Organization that has requested the action
-    isRequestedBy: Organization = Field(
+    isRequestedBy: Union[Organization, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#isRequestedBy",
+        default=None,
     )
 
     # label: is revoked by
@@ -311,8 +317,9 @@ class ActionRequest(OneRecordBaseModel):
 
     # label: Requested at
     # comment: Datetime when the request was created
-    isRequestedAt: datetime = Field(
+    isRequestedAt: Union[datetime, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#isRequestedAt",
+        default=None,
     )
 
     # label: Revoked at
@@ -338,8 +345,9 @@ class AuditTrail(OneRecordBaseModel):
 
     # label: Latest revision
     # comment: Latest revision of the Logistics Object. Starting with revision 0
-    hasLatestRevision: int = Field(
+    hasLatestRevision: Union[int, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasLatestRevision",
+        default=None,
     )
 
 
@@ -351,14 +359,16 @@ class Change(OneRecordBaseModel):
 
     # label: has Logistics Object
     # comment: A reference to a cargo:LogisticsObject.
-    hasLogisticsObject: LogisticsObject = Field(
+    hasLogisticsObject: Union[LogisticsObject, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasLogisticsObject",
+        default=None,
     )
 
     # label: has Operation
     # comment: Operation(s) to apply as PATCH on a Logistics Object
     hasOperation: List[Operation] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasOperation",
+        default_factory=list,
     )
 
     # label: has Verification Request
@@ -377,14 +387,16 @@ class Change(OneRecordBaseModel):
 
     # label: Revision
     # comment: Revision number of the Logistics Object, starting with 0 for changing the initial revision of a Logistics Object
-    hasRevision: int = Field(
+    hasRevision: Union[int, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasRevision",
+        default=None,
     )
 
     # label: notify RequestStatus Change
     # comment: Flag specifying if the requestor wants to receive Notification from the publisher when the status of an action request changed, default=FALSE
-    notifyRequestStatusChange: bool = Field(
+    notifyRequestStatusChange: Union[bool, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#notifyRequestStatusChange",
+        default=None,
     )
 
 
@@ -403,8 +415,9 @@ class Collection(OneRecordBaseModel):
 
     # label: Total items
     # comment: The number of total items contained in a collection
-    hasTotalItems: int = Field(
+    hasTotalItems: Union[int, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasTotalItems",
+        default=None,
     )
 
 
@@ -418,12 +431,14 @@ class Error(OneRecordBaseModel):
     # comment: Error details
     hasErrorDetail: List[ErrorDetail] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasErrorDetail",
+        default_factory=list,
     )
 
     # label: Title
     # comment: Short summary of the error
-    hasTitle: str = Field(
+    hasTitle: Union[str, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasTitle",
+        default=None,
     )
 
 
@@ -469,8 +484,9 @@ class Notification(OneRecordBaseModel):
     ]
 
     # label: has Event Type
-    hasEventType: NotificationEventType = Field(
+    hasEventType: Union[NotificationEventType, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasEventType",
+        default=None,
     )
 
     # label: has Logistics Event
@@ -515,24 +531,28 @@ class Operation(OneRecordBaseModel):
         URIRef("https://onerecord.iata.org/ns/api#Operation"),
     ]
 
-    o: OperationObject = Field(
+    o: Union[OperationObject, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#o",
+        default=None,
     )
 
-    op: PatchOperation = Field(
+    op: Union[PatchOperation, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#op",
+        default=None,
     )
 
     # label: p
     # comment: Operations objects must have exactly one p, predicate, member. The value of this member must be an URI, e.g. https://onerecord.iata.org/ns/cargo#hasGoodsDescription
-    p: AnyUrl = Field(
+    p: Union[AnyUrl, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#p",
+        default=None,
     )
 
     # label: s
     # comment: Operation objects MUST have exactly one "s", subject, member. The value of this member MUST be one of IRI or blank node.
-    s: str = Field(
+    s: Union[str, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#s",
+        default=None,
     )
 
 
@@ -546,14 +566,16 @@ class OperationObject(OneRecordBaseModel):
 
     # label: Datatype
     # comment: Data type of the field to update, must be a valid URI, e.g. http://www.w3.org/2001/XMLSchema#int
-    hasDatatype: AnyUrl = Field(
+    hasDatatype: Union[AnyUrl, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasDatatype",
+        default=None,
     )
 
     # label: Value
     # comment: Updated value for the field
-    hasValue: str = Field(
+    hasValue: Union[str, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasValue",
+        default=None,
     )
 
 
@@ -567,8 +589,9 @@ class ServerInformation(OneRecordBaseModel):
 
     # label: has Data Holder
     # comment: The data holder of the servers data.
-    hasDataHolder: Organization = Field(
+    hasDataHolder: Union[Organization, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasDataHolder",
+        default=None,
     )
 
     # label: Supported encoding
@@ -582,36 +605,42 @@ class ServerInformation(OneRecordBaseModel):
     # comment: Supported ONE Record API versions by the server, MUST include at least one supported version.
     hasSupportedApiVersion: List[str] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSupportedApiVersion",
+        default_factory=list,
     )
 
     # label: Supported content type
     # comment: Supported content types of the server, MUST contain at least application/ld+json
     hasSupportedContentType: List[str] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSupportedContentType",
+        default_factory=list,
     )
 
     # label: Supported language
     # comment: Supported languages of the ONE Record API, minimum is en-US (American English)
     hasSupportedLanguage: List[str] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSupportedLanguage",
+        default_factory=list,
     )
 
     # label: Supported ontology
     # comment: Supported ontologies on the server, MUST be non-versioned IRIs
     hasSupportedOntology: List[AnyUrl] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSupportedOntology",
+        default_factory=list,
     )
 
     # label: Supported ontology version
     # comment: Supported ontology versions on the server, MUST be versioned IRIs
     hasSupportedOntologyVersion: List[AnyUrl] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSupportedOntologyVersion",
+        default_factory=list,
     )
 
     # label: Server endpoint
     # comment: ONE Record API endpoint
-    hasServerEndpoint: AnyUrl = Field(
+    hasServerEndpoint: Union[AnyUrl, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasServerEndpoint",
+        default=None,
     )
 
 
@@ -622,18 +651,21 @@ class Subscription(OneRecordBaseModel):
     ]
 
     # label: has Subscriber
-    hasSubscriber: Organization = Field(
+    hasSubscriber: Union[Organization, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSubscriber",
+        default=None,
     )
 
-    hasTopicType: TopicType = Field(
+    hasTopicType: Union[TopicType, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasTopicType",
+        default=None,
     )
 
     # label: Include Subscription Event Type
     # comment: An array used to indicate the specific types of notifications that the subscriber desires to receive from the publisher. The subscriber is required to specify their preferences on a per-type basis
     includeSubscriptionEventType: List[SubscriptionEventType] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#includeSubscriptionEventType",
+        default_factory=list,
     )
 
     # label: Content type
@@ -645,14 +677,16 @@ class Subscription(OneRecordBaseModel):
 
     # label: notify RequestStatus Change
     # comment: Flag specifying if the requestor wants to receive Notification from the publisher when the status of an action request changed, default=FALSE
-    notifyRequestStatusChange: bool = Field(
+    notifyRequestStatusChange: Union[bool, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#notifyRequestStatusChange",
+        default=None,
     )
 
     # label: Topic
     # comment: The Logistics Object type or specific Logistics Object to which the subscription belongs to e.g. https://onerecord.iata.org/Piece or https://1r.example.com/7f01363f-0c6a-4414-be48-d3692e219b91
-    hasTopic: AnyUrl = Field(
+    hasTopic: Union[AnyUrl, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasTopic",
+        default=None,
     )
 
     # label: Expires at
@@ -687,18 +721,21 @@ class Verification(OneRecordBaseModel):
     # comment: Error object(s) if the processing was not successful
     hasError: List[Error] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasError",
+        default_factory=list,
     )
 
     # label: has Logistics Object
     # comment: A reference to a cargo:LogisticsObject.
-    hasLogisticsObject: LogisticsObject = Field(
+    hasLogisticsObject: Union[LogisticsObject, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasLogisticsObject",
+        default=None,
     )
 
     # label: Revision
     # comment: Revision number of the Logistics Object, starting with 0 for changing the initial revision of a Logistics Object
-    hasRevision: int = Field(
+    hasRevision: Union[int, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasRevision",
+        default=None,
     )
 
 
@@ -712,8 +749,9 @@ class AccessDelegationRequest(ActionRequest):
     ]
 
     # label: has Access Delegation
-    hasAccessDelegation: AccessDelegation = Field(
+    hasAccessDelegation: Union[AccessDelegation, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasAccessDelegation",
+        default=None,
     )
 
 
@@ -726,8 +764,9 @@ class ChangeRequest(ActionRequest):
 
     # label: has Change
     # comment: Contains submitted Change object
-    hasChange: Change = Field(
+    hasChange: Union[Change, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasChange",
+        default=None,
     )
 
 
@@ -742,8 +781,9 @@ class SubscriptionRequest(ActionRequest):
 
     # label: has Subscription
     # comment: Link to the requestors Subscription object with all subscription information
-    hasSubscription: Subscription = Field(
+    hasSubscription: Union[Subscription, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasSubscription",
+        default=None,
     )
 
 
@@ -758,8 +798,9 @@ class VerificationRequest(ActionRequest):
 
     # label: has Verification
     # comment: Links to the Verification class
-    hasVerification: Verification = Field(
+    hasVerification: Union[Verification, SkipJsonSchema[None]] = Field(
         serialization_alias="https://onerecord.iata.org/ns/api#hasVerification",
+        default=None,
     )
 
 

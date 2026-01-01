@@ -3,7 +3,7 @@ This file was automatically generated from the ONE Record API ontology.
 
 Ontology source: https://onerecord.iata.org/ns/cargo/ontology.ttl
 Ontology version: https://onerecord.iata.org/ns/cargo/3.2-rc2
-Generated on: 2025-12-31T20:58:49.476919+00:00
+Generated on: 2026-01-01T00:21:36.314145+00:00
 
 DO NOT EDIT MANUALLY.
 """
@@ -83,20 +83,16 @@ class ActionTimeType(str, Enum):
     # comment: Used when a time is requested
     REQUESTED = URIRef("https://onerecord.iata.org/ns/cargo#REQUESTED")
 
-    # label: PLANNED
-    # comment: Used when a time is planned
-    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
-
     # label: ACTUAL
     # comment: Used when a time is actual
     ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
 
+    # label: PLANNED
+    # comment: Used when a time is planned
+    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
+
 
 class BookingOptionStatus(str, Enum):
-    # label: NOT_BOOKABLE
-    # comment: Used when a booking option proposal is not bookable
-    NOT_BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NOT_BOOKABLE")
-
     # label: BOOKED
     # comment: Used when a booking option proposal is booked
     BOOKED = URIRef("https://onerecord.iata.org/ns/cargo#BOOKED")
@@ -105,35 +101,39 @@ class BookingOptionStatus(str, Enum):
     # comment: Used when a booking or booking option is queued or pending
     QUEUED = URIRef("https://onerecord.iata.org/ns/cargo#QUEUED")
 
-    # label: BOOKABLE
-    # comment: Used when a booking option (or proposal) is bookable
-    BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#BOOKABLE")
+    # label: NONBOOKABLE
+    # comment: Used when a booking option is nonbookable
+    NONBOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NONBOOKABLE")
+
+    # label: NOT_BOOKABLE
+    # comment: Used when a booking option proposal is not bookable
+    NOT_BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NOT_BOOKABLE")
 
     # label: EXPIRED
     # comment: Used when a booking option proposal is expired
     EXPIRED = URIRef("https://onerecord.iata.org/ns/cargo#EXPIRED")
 
+    # label: BOOKABLE
+    # comment: Used when a booking option (or proposal) is bookable
+    BOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#BOOKABLE")
+
     # label: ON_REQUEST
     # comment: Used when a booking option proposal is on request
     ON_REQUEST = URIRef("https://onerecord.iata.org/ns/cargo#ON_REQUEST")
 
-    # label: NONBOOKABLE
-    # comment: Used when a booking option is nonbookable
-    NONBOOKABLE = URIRef("https://onerecord.iata.org/ns/cargo#NONBOOKABLE")
-
 
 class BookingStatus(str, Enum):
-    # label: DELETED
-    # comment: Used when a booking is deleted
-    DELETED = URIRef("https://onerecord.iata.org/ns/cargo#DELETED")
+    # label: REJECTED
+    # comment: Used when a booking is rejected
+    REJECTED = URIRef("https://onerecord.iata.org/ns/cargo#REJECTED")
 
     # label: QUEUED
     # comment: Used when a booking or booking option is queued or pending
     QUEUED = URIRef("https://onerecord.iata.org/ns/cargo#QUEUED")
 
-    # label: REJECTED
-    # comment: Used when a booking is rejected
-    REJECTED = URIRef("https://onerecord.iata.org/ns/cargo#REJECTED")
+    # label: DELETED
+    # comment: Used when a booking is deleted
+    DELETED = URIRef("https://onerecord.iata.org/ns/cargo#DELETED")
 
     # label: CONFIRMED
     # comment: Used when a booking is confirmed
@@ -141,31 +141,19 @@ class BookingStatus(str, Enum):
 
 
 class CompositionType(str, Enum):
-    # label: COMPOSITION
-    # comment: Describes a composition, for example the loading of a container or the build-up of an ULD
-    COMPOSITION = URIRef("https://onerecord.iata.org/ns/cargo#COMPOSITION")
-
     # label: DECOMPOSITION
     # comment: Describes a decomposition, for example the unloading of a container or the break-down of an ULD
     DECOMPOSITION = URIRef("https://onerecord.iata.org/ns/cargo#DECOMPOSITION")
 
+    # label: COMPOSITION
+    # comment: Describes a composition, for example the loading of a container or the build-up of an ULD
+    COMPOSITION = URIRef("https://onerecord.iata.org/ns/cargo#COMPOSITION")
+
 
 class ContactDetailType(str, Enum):
-    # label: ALTERNATE_EMAIL_ADDRESS
-    # comment: Indicates a contact detail as alternate email address
-    ALTERNATE_EMAIL_ADDRESS = URIRef(
-        "https://onerecord.iata.org/ns/cargo#ALTERNATE_EMAIL_ADDRESS"
-    )
-
     # label: PHONE_NUMBER
     # comment: Indicates a contact detail as phone number
     PHONE_NUMBER = URIRef("https://onerecord.iata.org/ns/cargo#PHONE_NUMBER")
-
-    # label: ALTERNATE_PHONE_NUMBER
-    # comment: Indicates a contact detail as alternate phone number
-    ALTERNATE_PHONE_NUMBER = URIRef(
-        "https://onerecord.iata.org/ns/cargo#ALTERNATE_PHONE_NUMBER"
-    )
 
     # label: WEBSITE
     # comment: Indicates a contact detail as website
@@ -179,23 +167,35 @@ class ContactDetailType(str, Enum):
     # comment: Indicates a contact detail as fax number
     FAX_NUMBER = URIRef("https://onerecord.iata.org/ns/cargo#FAX_NUMBER")
 
+    # label: ALTERNATE_PHONE_NUMBER
+    # comment: Indicates a contact detail as alternate phone number
+    ALTERNATE_PHONE_NUMBER = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ALTERNATE_PHONE_NUMBER"
+    )
+
     # label: TELEX
     # comment: Indicates a contact detail as telex
     TELEX = URIRef("https://onerecord.iata.org/ns/cargo#TELEX")
 
+    # label: ALTERNATE_EMAIL_ADDRESS
+    # comment: Indicates a contact detail as alternate email address
+    ALTERNATE_EMAIL_ADDRESS = URIRef(
+        "https://onerecord.iata.org/ns/cargo#ALTERNATE_EMAIL_ADDRESS"
+    )
+
 
 class ContactRole(str, Enum):
-    # label: EMERGENCY_CONTACT
-    # comment: Indicates a contact person as emergency contact
-    EMERGENCY_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#EMERGENCY_CONTACT")
+    # label: CUSTOMS_CONTACT
+    # comment: Indicates a contact person as customs contact
+    CUSTOMS_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMS_CONTACT")
 
     # label: CUSTOMER_CONTACT
     # comment: Indicates a contact person as customer contact
     CUSTOMER_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMER_CONTACT")
 
-    # label: CUSTOMS_CONTACT
-    # comment: Indicates a contact person as customs contact
-    CUSTOMS_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#CUSTOMS_CONTACT")
+    # label: EMERGENCY_CONTACT
+    # comment: Indicates a contact person as emergency contact
+    EMERGENCY_CONTACT = URIRef("https://onerecord.iata.org/ns/cargo#EMERGENCY_CONTACT")
 
 
 class DirectionType(str, Enum):
@@ -203,64 +203,56 @@ class DirectionType(str, Enum):
     # comment: Indicates the that the movement time describes an unplanned stop
     UNPLANNED_STOP = URIRef("https://onerecord.iata.org/ns/cargo#UNPLANNED_STOP")
 
-    # label: INBOUND
-    # comment: Indicates the described direction in a movement time as inbound
-    INBOUND = URIRef("https://onerecord.iata.org/ns/cargo#INBOUND")
-
     # label: OUTBOUND
     # comment: Indicates the described direction in a movement time as outbound
     OUTBOUND = URIRef("https://onerecord.iata.org/ns/cargo#OUTBOUND")
 
+    # label: INBOUND
+    # comment: Indicates the described direction in a movement time as inbound
+    INBOUND = URIRef("https://onerecord.iata.org/ns/cargo#INBOUND")
+
 
 class EventTimeType(str, Enum):
-    # label: PLANNED
-    # comment: Used when a time is planned
-    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
-
-    # label: ACTUAL
-    # comment: Used when a time is actual
-    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
-
-    # label: REQUESTED
-    # comment: Used when a time is requested
-    REQUESTED = URIRef("https://onerecord.iata.org/ns/cargo#REQUESTED")
-
     # label: ESTIMATED
     # comment: Used when a time is estimated
     ESTIMATED = URIRef("https://onerecord.iata.org/ns/cargo#ESTIMATED")
+
+    # label: PLANNED
+    # comment: Used when a time is planned
+    PLANNED = URIRef("https://onerecord.iata.org/ns/cargo#PLANNED")
 
     # label: EXPECTED
     # comment: Used when a time is expected
     EXPECTED = URIRef("https://onerecord.iata.org/ns/cargo#EXPECTED")
 
+    # label: REQUESTED
+    # comment: Used when a time is requested
+    REQUESTED = URIRef("https://onerecord.iata.org/ns/cargo#REQUESTED")
+
+    # label: ACTUAL
+    # comment: Used when a time is actual
+    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
+
 
 class ExecutionStatus(str, Enum):
-    # label: ACTIVE
-    # comment: Used when a LogisticsActivity is active
-    ACTIVE = URIRef("https://onerecord.iata.org/ns/cargo#ACTIVE")
-
     # label: PENDING
     # comment: Used when a LogisticsActivity is pending
     PENDING = URIRef("https://onerecord.iata.org/ns/cargo#PENDING")
-
-    # label: CANCELLED
-    # comment: Used when a LogisticsActivity is cancelled
-    CANCELLED = URIRef("https://onerecord.iata.org/ns/cargo#CANCELLED")
 
     # label: COMPLETE
     # comment: Used when a LogisticsActivity is complete
     COMPLETE = URIRef("https://onerecord.iata.org/ns/cargo#COMPLETE")
 
+    # label: ACTIVE
+    # comment: Used when a LogisticsActivity is active
+    ACTIVE = URIRef("https://onerecord.iata.org/ns/cargo#ACTIVE")
+
+    # label: CANCELLED
+    # comment: Used when a LogisticsActivity is cancelled
+    CANCELLED = URIRef("https://onerecord.iata.org/ns/cargo#CANCELLED")
+
 
 class LoadType(str, Enum):
-    # label: PALLET
-    # comment: Indicates the load type as pallet
-    PALLET = URIRef("https://onerecord.iata.org/ns/cargo#PALLET")
-
-    # label: UNIT_LOAD_DEVICE
-    # comment: Indicates the load type as uld
-    UNIT_LOAD_DEVICE = URIRef("https://onerecord.iata.org/ns/cargo#UNIT_LOAD_DEVICE")
-
     # label: BULK
     # comment: Indicates the load type as bulk
     BULK = URIRef("https://onerecord.iata.org/ns/cargo#BULK")
@@ -269,32 +261,44 @@ class LoadType(str, Enum):
     # comment: Indicates the load type as loose
     LOOSE = URIRef("https://onerecord.iata.org/ns/cargo#LOOSE")
 
+    # label: PALLET
+    # comment: Indicates the load type as pallet
+    PALLET = URIRef("https://onerecord.iata.org/ns/cargo#PALLET")
+
+    # label: UNIT_LOAD_DEVICE
+    # comment: Indicates the load type as uld
+    UNIT_LOAD_DEVICE = URIRef("https://onerecord.iata.org/ns/cargo#UNIT_LOAD_DEVICE")
+
 
 class LoadingType(str, Enum):
-    # label: LOADING
-    # comment: Describes a loading process, for example putting an ULD on an aircraft or a piece in a truck
-    LOADING = URIRef("https://onerecord.iata.org/ns/cargo#LOADING")
-
     # label: UNLOADING
     # comment: Describes an unloading process, for example removing an ULD from an aircraft or a piece from a truck
     UNLOADING = URIRef("https://onerecord.iata.org/ns/cargo#UNLOADING")
 
+    # label: LOADING
+    # comment: Describes a loading process, for example putting an ULD on an aircraft or a piece in a truck
+    LOADING = URIRef("https://onerecord.iata.org/ns/cargo#LOADING")
+
 
 class ModeQualifier(str, Enum):
-    # label: ON_CARRIAGE
-    # comment: Indicates the mode qualifier as on carriage
-    ON_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#ON_CARRIAGE")
+    # label: MAIN_CARRIAGE
+    # comment: Indicates the mode qualifier as main carriage
+    MAIN_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#MAIN_CARRIAGE")
 
     # label: PRE_CARRIAGE
     # comment: Indicates the mode qualifier as pre carriage
     PRE_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#PRE_CARRIAGE")
 
-    # label: MAIN_CARRIAGE
-    # comment: Indicates the mode qualifier as main carriage
-    MAIN_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#MAIN_CARRIAGE")
+    # label: ON_CARRIAGE
+    # comment: Indicates the mode qualifier as on carriage
+    ON_CARRIAGE = URIRef("https://onerecord.iata.org/ns/cargo#ON_CARRIAGE")
 
 
 class MovementTimeType(str, Enum):
+    # label: ACTUAL
+    # comment: Used when a time is actual
+    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
+
     # label: ESTIMATED
     # comment: Used when a time is estimated
     ESTIMATED = URIRef("https://onerecord.iata.org/ns/cargo#ESTIMATED")
@@ -303,43 +307,39 @@ class MovementTimeType(str, Enum):
     # comment: Used when a time is scheduled
     SCHEDULED = URIRef("https://onerecord.iata.org/ns/cargo#SCHEDULED")
 
-    # label: ACTUAL
-    # comment: Used when a time is actual
-    ACTUAL = URIRef("https://onerecord.iata.org/ns/cargo#ACTUAL")
-
 
 class SensorType(str, Enum):
-    # label: VIBRATION
-    # comment: Indicates the sensor type as vibration
-    VIBRATION = URIRef("https://onerecord.iata.org/ns/cargo#VIBRATION")
+    # label: HUMIDITY
+    # comment: Indicates the sensor type as humidity
+    HUMIDITY = URIRef("https://onerecord.iata.org/ns/cargo#HUMIDITY")
 
     # label: GEOLOCATION
     # comment: Indicates the sensor type as geolocation
     GEOLOCATION = URIRef("https://onerecord.iata.org/ns/cargo#GEOLOCATION")
 
-    # label: THERMOMETER
-    # comment: Indicates the sensor type as thermometer
-    THERMOMETER = URIRef("https://onerecord.iata.org/ns/cargo#THERMOMETER")
-
-    # label: TILT
-    # comment: Indicates the sensor type as tilt
-    TILT = URIRef("https://onerecord.iata.org/ns/cargo#TILT")
-
     # label: PRESSURE
     # comment: Indicates the sensor type as pressure
     PRESSURE = URIRef("https://onerecord.iata.org/ns/cargo#PRESSURE")
 
-    # label: HUMIDITY
-    # comment: Indicates the sensor type as humidity
-    HUMIDITY = URIRef("https://onerecord.iata.org/ns/cargo#HUMIDITY")
+    # label: THERMOMETER
+    # comment: Indicates the sensor type as thermometer
+    THERMOMETER = URIRef("https://onerecord.iata.org/ns/cargo#THERMOMETER")
+
+    # label: ACCELEROMETER
+    # comment: Indicates the sensor type as accelerometer
+    ACCELEROMETER = URIRef("https://onerecord.iata.org/ns/cargo#ACCELEROMETER")
+
+    # label: VIBRATION
+    # comment: Indicates the sensor type as vibration
+    VIBRATION = URIRef("https://onerecord.iata.org/ns/cargo#VIBRATION")
 
     # label: LIGHT
     # comment: Indicates the sensor type as light
     LIGHT = URIRef("https://onerecord.iata.org/ns/cargo#LIGHT")
 
-    # label: ACCELEROMETER
-    # comment: Indicates the sensor type as accelerometer
-    ACCELEROMETER = URIRef("https://onerecord.iata.org/ns/cargo#ACCELEROMETER")
+    # label: TILT
+    # comment: Indicates the sensor type as tilt
+    TILT = URIRef("https://onerecord.iata.org/ns/cargo#TILT")
 
 
 class StoringType(str, Enum):
@@ -357,13 +357,13 @@ class WaybillType(str, Enum):
     # comment: Indicates a House Waybill
     HOUSE = URIRef("https://onerecord.iata.org/ns/cargo#HOUSE")
 
-    # label: DIRECT
-    # comment: Indicates a Direct waybill
-    DIRECT = URIRef("https://onerecord.iata.org/ns/cargo#DIRECT")
-
     # label: MASTER
     # comment: Indicates a Master Waybill
     MASTER = URIRef("https://onerecord.iata.org/ns/cargo#MASTER")
+
+    # label: DIRECT
+    # comment: Indicates a Direct waybill
+    DIRECT = URIRef("https://onerecord.iata.org/ns/cargo#DIRECT")
 
 
 class AccountNumber(OneRecordBaseModel):

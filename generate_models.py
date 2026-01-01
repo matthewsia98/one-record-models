@@ -352,9 +352,13 @@ for module_name, url in MODULE_TO_ONTOLOGY.items():
 
             match (is_optional, is_list):
                 case (False, False):
-                    field_info["annotated_type"] = python_type
+                    field_info["annotated_type"] = (
+                        f"Union[{python_type}, SkipJsonSchema[None]]"
+                    )
+                    field_info["default"] = "None"
                 case (False, True):
                     field_info["annotated_type"] = f"List[{python_type}]"
+                    field_info["default_factory"] = "list"
                 case (True, False):
                     field_info["annotated_type"] = (
                         f"Union[{python_type}, SkipJsonSchema[None]]"
