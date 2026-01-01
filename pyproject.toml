@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "devtools>=0.12.2",
     "fastapi[standard]>=0.128.0",
     "mypy>=1.19.1",
     "pytest>=9.0.2",
@@ -21,6 +22,9 @@ dev = [
 [tool.pytest]
 testpaths = [
     "tests",
+]
+addopts = [
+    "-s",
 ]
 
 

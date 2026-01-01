@@ -1,8 +1,13 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from pydantic import AnyUrl
 from rdflib import URIRef
 
-from one_record_ontology.models.generated.api import ServerInformation
+from one_record_ontology.models.generated.api import (
+    ServerInformation,
+    Subscription,
+    SubscriptionEventType,
+    TopicType,
+)
 from one_record_ontology.models.generated.cargo import Organization, OtherIdentifier
 
 app = FastAPI()
@@ -40,14 +45,46 @@ async def read_root(request: Request):
         hasSupportedOntologyVersion=[],
     )
 
-    # return Response(
-    #     content=server_info.to_graph().serialize(
-    #         format="json-ld",
-    #         context={
-    #             "api": "https://onerecord.iata.org/ns/api#",
-    #             "cargo": "https://onerecord.iata.org/ns/cargo#",
-    #         },
-    #     ),
-    #     media_type="application/ld+json",
-    # )
-    return server_info
+    return Response(
+        content=server_info.to_graph().serialize(
+            format="json-ld",
+            context={
+                "api": "https://onerecord.iata.org/ns/api#",
+                "cargo": "https://onerecord.iata.org/ns/cargo#",
+            },
+        ),
+        media_type="application/ld+json",
+    )
+
+
+@app.get("/subscriptions")
+def get_subscription(request: Request, topicType: TopicType, topic: AnyUrl):
+    base_url = str(request.base_url).rstrip("/")
+    data_holder = "/".join([base_url, "logistics-objects", "_data-holder"])
+
+    organization = Organization(
+        subject=URIRef(data_holder),
+        name="TEST ORG",
+    )
+
+    subscription = Subscription(
+        hasSubscriber=organization,
+        hasTopicType=topicType,
+        hasTopic=topic,
+        includeSubscriptionEventType=[
+            SubscriptionEventType.LOGISTICS_OBJECT_UPDATED,
+            SubscriptionEventType.LOGISTICS_OBJECT_CREATED,
+            SubscriptionEventType.LOGISTICS_EVENT_RECEIVED,
+        ],
+    )
+
+    return Response(
+        content=subscription.to_graph().serialize(
+            format="json-ld",
+            context={
+                "api": "https://onerecord.iata.org/ns/api#",
+                "cargo": "https://onerecord.iata.org/ns/cargo#",
+            },
+        ),
+        media_type="application/ld+json",
+    )

@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, ClassVar, List, Optional, Self, Union, get_args, get_origin
 
 from pydantic import AnyUrl, BaseModel, Field, computed_field
@@ -81,12 +82,16 @@ class OneRecordBaseModel(BaseModel):
             else:
                 if origin is not list:
                     value = g.value(subject, field_uri)
-                    if isinstance(value, Literal):
+                    if isinstance(value, URIRef):
+                        kwargs[name] = base_type(str(value))
+                    elif isinstance(value, Literal):
                         kwargs[name] = value.toPython()
                 else:
                     values: list[Any] = []
                     for obj in g.objects(subject, field_uri):
-                        if isinstance(obj, Literal):
+                        if isinstance(obj, URIRef):
+                            values.append(base_type(str(obj)))
+                        elif isinstance(obj, Literal):
                             values.append(obj.toPython())
                     kwargs[name] = values
 
@@ -144,12 +149,21 @@ class OneRecordBaseModel(BaseModel):
                     objs = value
 
                 for value in objs:
-                    g.add(
-                        (
-                            self.subject,
-                            URIRef(field.serialization_alias),
-                            Literal(value),
+                    if isinstance(value, Enum):
+                        g.add(
+                            (
+                                self.subject,
+                                URIRef(field.serialization_alias),
+                                URIRef(value.value),
+                            )
                         )
-                    )
+                    else:
+                        g.add(
+                            (
+                                self.subject,
+                                URIRef(field.serialization_alias),
+                                Literal(value),
+                            )
+                        )
 
         return g
