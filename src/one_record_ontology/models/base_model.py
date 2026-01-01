@@ -33,6 +33,11 @@ class OneRecordBaseModel(BaseModel):
         if cls is OneRecordBaseModel:
             return  # base class itself is allowed
 
+        if not hasattr(cls, "_type") or not cls._type:
+            raise TypeError(
+                f"{cls.__name__} must define a non-empty class attribute `_type`"
+            )
+
         if not hasattr(cls, "_types") or not cls._types:
             raise TypeError(
                 f"{cls.__name__} must define a non-empty class attribute `_types`"
