@@ -156,10 +156,11 @@ class OneRecordBaseModel(BaseModel):
             g.add((self.subject, RDF.type, t))
 
         for name, field in self.__class__.model_fields.items():
-            if field.annotation is None:
-                raise TypeError(f"Field {name} has no annotation")
-
-            if field.serialization_alias is None:
+            if (
+                field.annotation is None
+                or field.serialization_alias == "@id"
+                or field.serialization_alias is None
+            ):
                 continue
 
             annotation = field.annotation

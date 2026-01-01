@@ -23,7 +23,9 @@ def test_ServerInformation():
     obj = ServerInformation.from_graph(g)
     debug(obj)
 
-    obj.to_graph()
+    obj_g = obj.to_graph()
+    debug(obj_g)
+    print(obj_g.serialize(format="json-ld"))
 
 
 def test_Subscription():
@@ -37,7 +39,9 @@ def test_Subscription():
     obj = Subscription.from_graph(g)
     debug(obj)
 
-    obj.to_graph()
+    obj_g = obj.to_graph()
+    debug(obj_g)
+    print(obj_g.serialize(format="json-ld"))
 
 
 def test_Notification():
@@ -51,4 +55,6 @@ def test_Notification():
     obj = Notification.from_graph(g)
     debug(obj)
 
-    obj.to_graph()
+    obj_g = obj.to_graph()
+    debug(obj_g)
+    print(obj_g.serialize(format="json-ld"))

@@ -1,3 +1,4 @@
+from devtools import debug
 from fastapi import FastAPI, Request, Response
 from pydantic import AnyUrl
 from rdflib import URIRef
@@ -44,6 +45,8 @@ async def read_root(request: Request):
         ],
         hasSupportedOntologyVersion=[],
     )
+
+    debug(server_info)
 
     return Response(
         content=server_info.to_graph().serialize(
