@@ -11,13 +11,57 @@ from one_record_ontology.models.generated.api import (
 )
 from one_record_ontology.models.generated.cargo import Organization, OtherIdentifier
 
-app = FastAPI()
+
+class JsonLdResponse(Response):
+    media_type = "application/ld+json"
+
+
+app = FastAPI(
+    default_response_class=JsonLdResponse,
+    swagger_ui_parameters={
+        "deepLinking": False,
+    },
+)
 
 
 @app.get(
     "/",
     # response_class=Response,
     response_model=ServerInformation,
+    responses={
+        200: {
+            "content": {
+                "application/ld+json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/ServerInformation",
+                    },
+                    "example": {
+                        "@context": {
+                            "cargo": "https://onerecord.iata.org/ns/cargo#",
+                            "api": "https://onerecord.iata.org/ns/api#",
+                            "xsd": "http://www.w3.org/2001/XMLSchema#",
+                            "api:hasServerEndpoint": {"@type": "xsd:anyURI"},
+                            "api:hasSupportedOntology": {"@type": "xsd:anyURI"},
+                        },
+                        "@id": "https://1r.example.com/",
+                        "@type": "api:ServerInformation",
+                        "api:hasDataHolder": {
+                            "@type": "cargo:Company",
+                            "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda",
+                        },
+                        "api:hasServerEndpoint": "http://1r.example.com",
+                        "api:hasSupportedApiVersion": ["2.2.0"],
+                        "api:hasSupportedContentType": ["application/ld+json"],
+                        "api:hasSupportedLanguage": ["en-US"],
+                        "api:hasSupportedOntology": [
+                            "https://onerecord.iata.org/ns/cargo/3.2.0",
+                            "https://onerecord.iata.org/ns/api/2.2.0",
+                        ],
+                    },
+                }
+            }
+        }
+    },
 )
 async def read_root(request: Request):
     base_url = str(request.base_url).rstrip("/")
@@ -48,7 +92,7 @@ async def read_root(request: Request):
 
     debug(server_info)
 
-    return Response(
+    return JsonLdResponse(
         content=server_info.to_graph().serialize(
             format="json-ld",
             context={
@@ -56,7 +100,6 @@ async def read_root(request: Request):
                 "cargo": "https://onerecord.iata.org/ns/cargo#",
             },
         ),
-        media_type="application/ld+json",
     )
 
 

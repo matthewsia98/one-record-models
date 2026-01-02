@@ -11,11 +11,11 @@ from typing import (
     get_origin,
 )
 
-from pydantic import BaseModel, Field, GetJsonSchemaHandler, WithJsonSchema
+from pydantic import AnyUrl, BaseModel, Field, GetJsonSchemaHandler, WithJsonSchema
 from pydantic.fields import ComputedFieldInfo, FieldInfo
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema as cs
-from rdflib import RDF, BNode, Graph, Literal, URIRef
+from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
 from one_record_ontology.utils.graph_utils import SubjectType, get_root_subject
 
@@ -32,12 +32,14 @@ def field_title_generator(
 class OneRecordBaseModel(BaseModel):
     _type: ClassVar[URIRef]
     _types: ClassVar[List[URIRef]]
+    graph: Optional[Graph] = Field(default=None, exclude=True)
     subject: Annotated[
         SubjectType, WithJsonSchema({"type": "string", "format": "uri"})
     ] = Field(default_factory=BNode, serialization_alias="@id")
 
     model_config = {
         "arbitrary_types_allowed": True,
+        "url_preserve_empty_path": True,
         "json_schema_mode_override": "serialization",
         "field_title_generator": field_title_generator,
     }
@@ -145,12 +147,18 @@ class OneRecordBaseModel(BaseModel):
                     kwargs[name] = values
 
         result = cls(**kwargs)
+        result.graph = g
         result.subject = subject
 
         return result
 
     def to_graph(self) -> Graph:
         g = Graph()
+
+        if self.graph is not None:
+            original_types = self.graph.objects(self.subject, RDF.type)
+            for t in original_types:
+                g.add((self.subject, RDF.type, t))
 
         for t in self.__class__._types:
             g.add((self.subject, RDF.type, t))
@@ -208,11 +216,15 @@ class OneRecordBaseModel(BaseModel):
                             )
                         )
                     else:
+                        datatype = None
+                        if isinstance(value, AnyUrl):
+                            datatype = XSD.anyURI
+
                         g.add(
                             (
                                 self.subject,
                                 URIRef(field.serialization_alias),
-                                Literal(value),
+                                Literal(value, datatype=datatype),
                             )
                         )
 

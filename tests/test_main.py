@@ -1,7 +1,9 @@
 from pathlib import Path
 
 from devtools import debug
+import pytest
 from rdflib import Graph
+from rdflib.compare import to_canonical_graph, to_isomorphic, graph_diff
 
 from one_record_ontology.models.generated.api import (
     Notification,
@@ -12,49 +14,34 @@ from one_record_ontology.models.generated.api import (
 TEST_DIR = Path(__file__).parent.resolve()
 
 
-def test_ServerInformation():
-    filepath = TEST_DIR / "resources" / "ServerInformation.json"
+@pytest.mark.parametrize(
+    "model_cls, filename",
+    [
+        (ServerInformation, "ServerInformation.json"),
+        (Subscription, "Subscription.json"),
+        (Notification, "Notification.json"),
+    ],
+)
+def test_jsonld_roundtrip(model_cls, filename):
+    filepath = TEST_DIR / "resources" / filename
+    data = filepath.read_text()
 
-    data = Path(filepath).read_text()
+    g1 = Graph()
+    g1.parse(data=data, format="json-ld")
 
-    g = Graph()
-    g.parse(data=data, format="json-ld")
+    obj = model_cls.from_graph(g1)
 
-    obj = ServerInformation.from_graph(g)
-    debug(obj)
+    g2 = obj.to_graph()
 
-    obj_g = obj.to_graph()
-    debug(obj_g)
-    print(obj_g.serialize(format="json-ld"))
+    _, in_first, _ = graph_diff(g1, g2)
 
-
-def test_Subscription():
-    filepath = TEST_DIR / "resources" / "Subscription.json"
-
-    data = Path(filepath).read_text()
-
-    g = Graph()
-    g.parse(data=data, format="json-ld")
-
-    obj = Subscription.from_graph(g)
-    debug(obj)
-
-    obj_g = obj.to_graph()
-    debug(obj_g)
-    print(obj_g.serialize(format="json-ld"))
-
-
-def test_Notification():
-    filepath = TEST_DIR / "resources" / "Notification.json"
-
-    data = Path(filepath).read_text()
-
-    g = Graph()
-    g.parse(data=data, format="json-ld")
-
-    obj = Notification.from_graph(g)
-    debug(obj)
-
-    obj_g = obj.to_graph()
-    debug(obj_g)
-    print(obj_g.serialize(format="json-ld"))
+    assert len(in_first) == 0, "\n".join(
+        [
+            "==== g1 ====",
+            g1.serialize(format="json-ld"),
+            "==== g2 ====",
+            g2.serialize(format="json-ld"),
+            "==== in_first ====",
+            "".join([f"\n{str(x)}" for x in in_first]),
+        ]
+    )
