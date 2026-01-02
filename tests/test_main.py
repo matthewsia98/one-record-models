@@ -10,6 +10,7 @@ from one_record_ontology.models.generated.api import (
     ServerInformation,
     Subscription,
 )
+from one_record_ontology.models.generated.cargo import LogisticsObject, Piece
 
 TEST_DIR = Path(__file__).parent.resolve()
 
@@ -20,6 +21,7 @@ TEST_DIR = Path(__file__).parent.resolve()
         (ServerInformation, "ServerInformation.json"),
         (Subscription, "Subscription.json"),
         (Notification, "Notification.json"),
+        (Piece, "Piece.json"),
     ],
 )
 def test_jsonld_roundtrip(model_cls, filename):

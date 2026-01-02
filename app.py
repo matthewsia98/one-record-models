@@ -9,7 +9,12 @@ from one_record_ontology.models.generated.api import (
     SubscriptionEventType,
     TopicType,
 )
-from one_record_ontology.models.generated.cargo import Organization, OtherIdentifier
+from one_record_ontology.models.generated.cargo import (
+    Organization,
+    OtherIdentifier,
+    Piece,
+)
+from one_record_ontology.models.generated.code_lists import SpecialHandlingCode
 
 
 class JsonLdResponse(Response):
@@ -138,3 +143,41 @@ def get_subscription(request: Request, topicType: TopicType, topic: AnyUrl):
         ),
         media_type="application/ld+json",
     )
+
+
+@app.get("/logistics-objects/{lo_id}")
+def get_logistics_object(request: Request, lo_id: str):
+    if lo_id == "_data-holder":
+        base_url = str(request.base_url).rstrip("/")
+        data_holder = "/".join([base_url, "logistics-objects", "_data-holder"])
+
+        organization = Organization(
+            subject=URIRef(data_holder),
+            name="TEST ORG",
+        )
+
+        return Response(
+            content=organization.to_graph().serialize(
+                format="json-ld",
+                context={
+                    "cargo": "https://onerecord.iata.org/ns/cargo#",
+                },
+            ),
+            media_type="application/ld+json",
+        )
+    else:
+        piece = Piece(
+            specialHandlingCodes=[
+                SpecialHandlingCode.SPX,
+            ],
+        )
+
+        return Response(
+            content=piece.to_graph().serialize(
+                format="json-ld",
+                context={
+                    "cargo": "https://onerecord.iata.org/ns/cargo#",
+                },
+            ),
+            media_type="application/ld+json",
+        )
