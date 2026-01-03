@@ -10,7 +10,7 @@ from one_record_ontology.models.generated.api import (
     ServerInformation,
     Subscription,
 )
-from one_record_ontology.models.generated.cargo import Piece, Waybill
+from one_record_ontology.models.generated.cargo import Company, Piece, Waybill
 
 TEST_DIR = Path(__file__).parent.resolve()
 
@@ -47,4 +47,18 @@ def test_jsonld_roundtrip(model_cls: OneRecordBaseModel, filename):
             "==== in_first ====",
             "".join([f"\n{str(x)}" for x in in_first]),
         ]
+    )
+
+
+def test_foo():
+    filepath = TEST_DIR / "resources" / "ServerInformation.json"
+    data = filepath.read_text()
+
+    g = Graph()
+    g.parse(data=data, format="json-ld")
+
+    obj = ServerInformation.from_graph(g)
+
+    assert isinstance(obj.hasDataHolder, Company), (
+        f"expected {Company}, got {type(obj.hasDataHolder)}"
     )

@@ -143,11 +143,41 @@ class OneRecordBaseModel(BaseModel):
                 if origin is not list:
                     obj_node = g.value(subject, field_uri)
                     if obj_node is not None:
+                        types = g.objects(obj_node, RDF.type)
+
+                        all_subclasses = []
+                        for sub in base_type.__subclasses__():
+                            all_subclasses.append(sub)
+                            all_subclasses.extend(sub.__subclasses__())
+                        all_subclasses.sort(
+                            key=lambda cls: len(cls.mro()), reverse=True
+                        )
+
+                        for t in types:
+                            for subclass in all_subclasses:
+                                if t == subclass._type:
+                                    base_type = subclass
+                                    break
                         obj = base_type.from_graph(g, obj_node, subjects_processed)
                         kwargs[name] = obj
                 else:
                     objs = []
                     for obj_node in g.objects(subject, field_uri):
+                        types = g.objects(obj_node, RDF.type)
+
+                        all_subclasses = []
+                        for sub in base_type.__subclasses__():
+                            all_subclasses.append(sub)
+                            all_subclasses.extend(sub.__subclasses__())
+                        all_subclasses.sort(
+                            key=lambda cls: len(cls.mro()), reverse=True
+                        )
+
+                        for t in types:
+                            for subclass in all_subclasses:
+                                if t == subclass._type:
+                                    base_type = subclass
+                                    break
                         obj = base_type.from_graph(g, obj_node, subjects_processed)
                         objs.append(obj)
                     kwargs[name] = objs
