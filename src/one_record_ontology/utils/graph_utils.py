@@ -20,7 +20,11 @@ def get_root_candidates(g: Graph, type: Optional[URIRef] = None) -> set[SubjectT
 
 
 def get_root_subject(g: Graph, type: Optional[URIRef] = None) -> SubjectType:
-    root_candidates = get_root_candidates(g, type)
+    # root_candidates = get_root_candidates(g, type)
+    root_candidates = set(g.subjects(RDF.type, type))
+
+    if len(root_candidates) == 0:
+        raise ValueError("No root candidate found")
 
     if len(root_candidates) > 1:
         raise ValueError("Multiple root candidates found")

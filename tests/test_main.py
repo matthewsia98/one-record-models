@@ -1,16 +1,16 @@
 from pathlib import Path
 
-from devtools import debug
 import pytest
 from rdflib import Graph
-from rdflib.compare import to_canonical_graph, to_isomorphic, graph_diff
+from rdflib.compare import graph_diff
 
+from one_record_ontology.models.base_model import OneRecordBaseModel
 from one_record_ontology.models.generated.api import (
     Notification,
     ServerInformation,
     Subscription,
 )
-from one_record_ontology.models.generated.cargo import LogisticsObject, Piece
+from one_record_ontology.models.generated.cargo import Piece, Waybill
 
 TEST_DIR = Path(__file__).parent.resolve()
 
@@ -22,9 +22,10 @@ TEST_DIR = Path(__file__).parent.resolve()
         (Subscription, "Subscription.json"),
         (Notification, "Notification.json"),
         (Piece, "Piece.json"),
+        (Waybill, "Waybill.json"),
     ],
 )
-def test_jsonld_roundtrip(model_cls, filename):
+def test_jsonld_roundtrip(model_cls: OneRecordBaseModel, filename):
     filepath = TEST_DIR / "resources" / filename
     data = filepath.read_text()
 

@@ -6,6 +6,7 @@ from typing import (
     List,
     Optional,
     Self,
+    Set,
     Union,
     get_args,
     get_origin,
@@ -35,11 +36,15 @@ class OneRecordBaseModel(BaseModel):
     graph: Optional[Graph] = Field(default=None, exclude=True)
     subject: Annotated[
         SubjectType, WithJsonSchema({"type": "string", "format": "uri"})
-    ] = Field(default_factory=BNode, serialization_alias="@id")
+    ] = Field(
+        default_factory=lambda: BNode().skolemize(basepath="internal:"),
+        serialization_alias="@id",
+    )
 
     model_config = {
         "arbitrary_types_allowed": True,
         "url_preserve_empty_path": True,
+        "validate_assignment": True,
         "json_schema_mode_override": "serialization",
         "field_title_generator": field_title_generator,
     }
@@ -96,9 +101,25 @@ class OneRecordBaseModel(BaseModel):
             )
 
     @classmethod
-    def from_graph(cls, g: Graph, subject: Optional[SubjectType] = None) -> Self:
+    def from_graph(
+        cls,
+        g: Graph,
+        subject: Optional[SubjectType] = None,
+        subjects_processed: Optional[dict[SubjectType, Self]] = None,
+    ) -> Self:
+        if subjects_processed is None:
+            subjects_processed = {}
+
         if subject is None:
             subject = get_root_subject(g, cls._type)
+
+        if subject in subjects_processed:
+            return subjects_processed[subject]
+
+        result = cls()
+        result.graph = g
+        result.subject = subject
+        subjects_processed[subject] = result
 
         kwargs: dict[str, Any] = {}
 
@@ -122,12 +143,12 @@ class OneRecordBaseModel(BaseModel):
                 if origin is not list:
                     obj_node = g.value(subject, field_uri)
                     if obj_node is not None:
-                        obj = base_type.from_graph(g, obj_node)
+                        obj = base_type.from_graph(g, obj_node, subjects_processed)
                         kwargs[name] = obj
                 else:
                     objs = []
                     for obj_node in g.objects(subject, field_uri):
-                        obj = base_type.from_graph(g, obj_node)
+                        obj = base_type.from_graph(g, obj_node, subjects_processed)
                         objs.append(obj)
                     kwargs[name] = objs
             else:
@@ -136,6 +157,11 @@ class OneRecordBaseModel(BaseModel):
                     if isinstance(value, URIRef):
                         kwargs[name] = base_type(str(value))
                     elif isinstance(value, Literal):
+                        # if value.datatype == XSD.anyURI and issubclass(
+                        #     base_type, AnyUrl
+                        # ):
+                        #     kwargs[name] = base_type(str(value))
+                        # else:
                         kwargs[name] = value.toPython()
                 else:
                     values: list[Any] = []
@@ -143,16 +169,28 @@ class OneRecordBaseModel(BaseModel):
                         if isinstance(obj, URIRef):
                             values.append(base_type(str(obj)))
                         elif isinstance(obj, Literal):
+                            # if obj.datatype == XSD.anyURI and issubclass(
+                            #     base_type, AnyUrl
+                            # ):
+                            #     values.append(base_type(str(obj)))
+                            # else:
                             values.append(obj.toPython())
                     kwargs[name] = values
 
-        result = cls(**kwargs)
-        result.graph = g
-        result.subject = subject
+        for key, value in kwargs.items():
+            setattr(result, key, value)
 
         return result
 
-    def to_graph(self) -> Graph:
+    def to_graph(self, subjects_processed: Optional[Set[SubjectType]] = None) -> Graph:
+        if subjects_processed is None:
+            subjects_processed = set()
+
+        if self.subject in subjects_processed:
+            return Graph()
+
+        subjects_processed.add(self.subject)
+
         g = Graph()
 
         if self.graph is not None:
@@ -191,7 +229,7 @@ class OneRecordBaseModel(BaseModel):
                     objs = value
 
                 for obj in objs:
-                    obj_graph = obj.to_graph()
+                    obj_graph = obj.to_graph(subjects_processed)
                     g += obj_graph
                     g.add(
                         (

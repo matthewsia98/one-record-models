@@ -1,0 +1,21 @@
+{
+    "@graph": [
+        {
+            "@id": "http://localhost:8081/logistics-objects/06430fc1-901f-4b66-a906-f2f8c9e8e0ee",
+            "@type": ["LogisticsObject", "Waybill"],
+            "shipment": {
+                "@id": "http://localhost:8081/logistics-objects/fe0ab0b8-8a01-4d34-bd32-60cb8e55544b"
+            }
+        },
+        {
+            "@id": "http://localhost:8081/logistics-objects/fe0ab0b8-8a01-4d34-bd32-60cb8e55544b",
+            "@type": ["LogisticsObject", "Shipment"],
+            "waybill": {
+                "@id": "http://localhost:8081/logistics-objects/06430fc1-901f-4b66-a906-f2f8c9e8e0ee"
+            }
+        }
+    ],
+    "@context": {
+        "@vocab": "https://onerecord.iata.org/ns/cargo#"
+    }
+}
